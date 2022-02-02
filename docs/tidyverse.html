@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 The basics of Tidyverse | Book’s title</title>
+  <meta name="description" content="Book on Data Science using R by J. Renato Leripio" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 The basics of Tidyverse | Book’s title" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Book on Data Science using R by J. Renato Leripio" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 The basics of Tidyverse | Book’s title" />
+  
+  <meta name="twitter:description" content="Book on Data Science using R by J. Renato Leripio" />
+  
+
+<meta name="author" content="J. Renato Leripio" />
+
+
+<meta name="date" content="2022-02-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="google.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Book on Data Science using R by J. Renato Leripio</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i><b>2</b> The basics of Tidyverse</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tidyverse.html"><a href="tidyverse.html#whats-tidyverse"><i class="fa fa-check"></i><b>2.1</b> What’s tidyverse?</a></li>
+<li class="chapter" data-level="2.2" data-path="tidyverse.html"><a href="tidyverse.html#import"><i class="fa fa-check"></i><b>2.2</b> Import</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="tidyverse.html"><a href="tidyverse.html#reading-from-files"><i class="fa fa-check"></i><b>2.2.1</b> Reading from files</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tidyverse.html"><a href="tidyverse.html#reading-from-api"><i class="fa fa-check"></i><b>2.2.2</b> Reading from API</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="tidyverse.html"><a href="tidyverse.html#wrangle"><i class="fa fa-check"></i><b>2.3</b> Wrangle</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="tidyverse.html"><a href="tidyverse.html#data-manipulation"><i class="fa fa-check"></i><b>2.3.1</b> Data manipulation</a></li>
+<li class="chapter" data-level="2.3.2" data-path="tidyverse.html"><a href="tidyverse.html#data-layout"><i class="fa fa-check"></i><b>2.3.2</b> Data layout</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="google.html"><a href="google.html"><i class="fa fa-check"></i><b>3</b> Google Mobility</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="google.html"><a href="google.html#importing-data"><i class="fa fa-check"></i><b>3.1</b> Importing data</a></li>
+<li class="chapter" data-level="3.2" data-path="google.html"><a href="google.html#preparing-the-data"><i class="fa fa-check"></i><b>3.2</b> Preparing the data</a></li>
+<li class="chapter" data-level="3.3" data-path="google.html"><a href="google.html#plot-information"><i class="fa fa-check"></i><b>3.3</b> Plot information</a></li>
+<li class="chapter" data-level="3.4" data-path="google.html"><a href="google.html#from-code-to-function"><i class="fa fa-check"></i><b>3.4</b> From code to function</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="owidCovid.html"><a href="owidCovid.html"><i class="fa fa-check"></i><b>4</b> Our World in Data COVID</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="owidCovid.html"><a href="owidCovid.html#importing-data-1"><i class="fa fa-check"></i><b>4.1</b> Importing data</a></li>
+<li class="chapter" data-level="4.2" data-path="owidCovid.html"><a href="owidCovid.html#preparing-the-data-1"><i class="fa fa-check"></i><b>4.2</b> Preparing the data</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Book’s title</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tidyverse" class="section level1" number="2">
+<h1><span class="header-section-number">Chapter 2</span> The basics of Tidyverse</h1>
+<p>The purpose of this chapter is to introduce the main functions of the core packages in tidyverse. It’s not intended to be a thorough description of every function, rather the idea is to provide the basic tools so that those who are either base R users or aren’t R users at all can follow along with the rest of the book. For a more detailed approach to tidyverse, the best source is <a href="https://r4ds.had.co.nz/">R for Data Science</a> by Hadley Wickham &amp; Garrett Grolemund. For those who feel comfortable with tidyverse, a quick skim through the chapter might be enough.</p>
+<div id="whats-tidyverse" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> What’s tidyverse?</h2>
+<p>To start, what’s tidyverse? According to the <a href="https://www.tidyverse.org/">official website</a>:</p>
+<blockquote>
+<p>The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures.</p>
+</blockquote>
+<p>From my own experience I can ensure you that tidyverse is all you need to carry out data analyses as <strong>neat</strong>, <strong>flexible</strong> and <strong>readable</strong> as possible. By the way, I believe these are the three most important goals for those who want to thrive as a data scientist.</p>
+<p>By <strong>neat</strong> I mean succinct code without any redundancy, a single block of code (not a bunch of loose objects) doing all the desired task. <strong>Flexible</strong>, in turn, means the code is general enough. It depends on the nature of the task at hand, so take it more like a philosophy. For example, does the solution still work if the data was updated with new values? Does it depend either on column names or the specific length of the vector? Finally, <strong>readable</strong> means that not only the understanding of the code is easy, but also that it’s straightforward to make adjustments to it if necessary.</p>
+<p>Most of the time writing neat, flexible and readable code takes longer and requires a dose of creativity, but it surely pays off. Moreover, with practice this will become more and more natural and the cost will get significantly lower.</p>
+<p>In the next sections we’ll review the most used functions to go through all the steps of everyday data analyses using core tidyverse packages designed to <strong>Import</strong>, <strong>Wrangle</strong>, <strong>Program</strong> and <strong>Plot</strong>.</p>
+</div>
+<div id="import" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Import</h2>
+<div id="reading-from-files" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Reading from files</h3>
+<p><code>readr</code> is the package used to import data from flat files (CSV and TXT). The most generic function is <code>read_delim</code> as it has a large set of arguments that allow us to declare the structure of the data we want to import. In practice, we often use the <code>read_csv</code> which is a special case of the former with some predefined settings suitable for CSV files – the most obvious being the comma as the column delimiter.</p>
+<p>If you’re running RStudio IDE, I recommend you to click on <strong>Import Dataset</strong> at the <strong>Environment</strong> sheet (by default it’s located in the upper right panel) to manually define the appropriate settings for your file. <strong>We should never be encouraged to use windows, click on buttons or any kind of shortcuts provided by the IDE. This is the only exception I think is worth it</strong>. First, because it can be tedious to set many specific parameters via trial-and-error to correctly import your data. Second, because once you have the configuration done the code is displayed at the bottom of the window so you can copy it and paste it on your script and, eventually, get rid of this shortcut as you learn how things work. Lastly, you’ll usually import one single data set for each task and there’s not much to improve on this process. Then, Yes, it’s a big waste of time trying to understand each single argument.</p>
+<p>Just for the sake of illustration, let’s use <code>readr</code> to import the COVID data from Our World in Data we’ll use in Chapter <a href="owidCovid.html#owidCovid">4</a>. It’s a standard CSV file, so we can use <code>read_csv</code> without any additional parameter. We just need to provide the file path or URL:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tidyverse.html#cb1-1" aria-hidden="true" tabindex="-1"></a>data_url <span class="ot">&lt;-</span> <span class="st">&#39;https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv&#39;</span></span>
+<span id="cb1-2"><a href="tidyverse.html#cb1-2" aria-hidden="true" tabindex="-1"></a>covid_data_from_url   <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(data_url)</span>
+<span id="cb1-3"><a href="tidyverse.html#cb1-3" aria-hidden="true" tabindex="-1"></a>covid_data_from_local <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;data/owid-covid-data.csv&#39;</span>)</span></code></pre></div>
+<p>Tidyverse also provides packages for reading other usual file types. For instance, we can use <code>readxl</code> to read MS Excel spreadsheets and <code>haven</code> to read data generated by popular statistical softwares (SPSS, Stata and SAS) in much the same way we did with <code>readr</code> for CSV files – you can check them at the <strong>Import Dataset</strong> dropdown menu. So we won’t waste time covering them. Rather, let’s use the rest of this section to talk about something very important and that usually gets less attention in books.</p>
+</div>
+<div id="reading-from-api" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Reading from API</h3>
+<p>Although the use of these traditional file formats are still widespread, organizations are increasingly switching to API’s to make data available to the public. This is a huge improvement since we’re able to customize our demand and retrieve only the data we need for the specific task.</p>
+<p>If you don’t know what an API is, think of it as an interface to establish a connection to a database. However, instead of reading all the content from this database you can inform your <strong>preferences</strong> like what columns you want, the desired observations (time range if it’s a time series) and so on. These preferences are embedded in a <strong>request</strong> and the right form to specify it is usually available in a documentation provided by the API maintainer.</p>
+<p>For example, the Federal Reserve Bank of St. Louis maintains a huge repository with hundreds of thousands of economic time series and we can import them using an API. The information on how to build the request is available in the <a href="https://fred.stlouisfed.org/docs/api/fred/">documentation</a>, where we can see a link with instructions on how to <strong>‘Get the observations or data values for an economic data series’</strong>. There, we find an example of a request for the US Real Gross National Product:</p>
+<p><a href="https://api.stlouisfed.org/fred/series/observations?series_id=GNPCA&amp;api_key=abcdefghijklmnopqrstuvwxyz123456&amp;file_type=json" class="uri">https://api.stlouisfed.org/fred/series/observations?series_id=GNPCA&amp;api_key=abcdefghijklmnopqrstuvwxyz123456&amp;file_type=json</a></p>
+<p>We can break this request to see its parts in more detail:</p>
+<ol style="list-style-type: decimal">
+<li>The static URL to access the <strong>Observations</strong> section in the API.</li>
+</ol>
+<p><span class="math display">\[
+\underbrace{\text{https://api.stlouisfed.org/fred/series/observations?}}_\text{Static: API URL}
+\]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>The series ID which identifies what series we want.</li>
+</ol>
+<p><span class="math display">\[
+\underbrace{\text{series_id=GNPCA}}_\text{Param. #1: Series ID}
+\]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>The API Key. We must create an account and require a personal key in order to retrieve data from the API. This one is an example for illustrative purposes only.</li>
+</ol>
+<p><span class="math display">\[
+\underbrace{\text{api_key=abcdefghijklmnopqrstuvwxyz123456}}_\text{Param. #2: API Key}
+\]</span></p>
+<ol start="4" style="list-style-type: decimal">
+<li>The file type for the output. There are several types, but I’d rather working with JSON.</li>
+</ol>
+<p><span class="math display">\[
+\underbrace{\text{file_type=json}}_\text{Param. #3: File Type}
+\]</span></p>
+<p>Note that all the parameters following the static part is separated by an <strong>&amp;</strong>. Then, if we want to add any extra parameter it should be placed right after an <strong>&amp;</strong>.</p>
+<p>Suppose we want to read monthly data for the <a href="https://fred.stlouisfed.org/series/CPALTT01USM657N">US Consumer Price Index (CPI)</a>. The <code>series_id</code> is <strong>CPALTT01USM657N</strong>. Besides, we’d only like to read data as of January 2010. How can we do so? There’s a parameter <code>observation_start</code> which defines the start of the observation period (YYYY-MM-DD format).</p>
+<p>The code below creates a separate object for each part of the request. Then, we use the <code>glue</code> function from the homonymous package to merge the pieces into a single string adding the appropriate <strong>&amp;</strong>. Of course, we could create the complete string all at once. But, creating separate objects makes it easier to find and edit values as well as to transform this task into a function if we had to read other data from this source frequently (more on this later in Chapter <a href="google.html#google">3</a>).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="tidyverse.html#cb2-1" aria-hidden="true" tabindex="-1"></a>api_url       <span class="ot">&lt;-</span> <span class="st">&#39;https://api.stlouisfed.org/fred/series/observations?&#39;</span></span>
+<span id="cb2-2"><a href="tidyverse.html#cb2-2" aria-hidden="true" tabindex="-1"></a>api_key       <span class="ot">&lt;-</span> <span class="st">&#39;bc0b91e1c6fa2cab4d4f180c7965edfa&#39;</span></span>
+<span id="cb2-3"><a href="tidyverse.html#cb2-3" aria-hidden="true" tabindex="-1"></a>api_series_id <span class="ot">&lt;-</span> <span class="st">&#39;CPALTT01USM657N&#39;</span></span>
+<span id="cb2-4"><a href="tidyverse.html#cb2-4" aria-hidden="true" tabindex="-1"></a>obs_start     <span class="ot">&lt;-</span> <span class="st">&#39;2010-01-01&#39;</span></span>
+<span id="cb2-5"><a href="tidyverse.html#cb2-5" aria-hidden="true" tabindex="-1"></a>api_filetype  <span class="ot">&lt;-</span> <span class="st">&#39;json&#39;</span></span>
+<span id="cb2-6"><a href="tidyverse.html#cb2-6" aria-hidden="true" tabindex="-1"></a>api_request   <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;{api_url}series_id={api_series_id}&amp;observation_start={obs_start}&amp;api_key={api_key}&amp;file_type={api_filetype}&#39;</span>)</span></code></pre></div>
+<p>Now, we use the <code>httr</code> package to connect to the API, send the request and get the content. The other steps transform the content from JSON to a standard R object (a list) and then convert it to a tibble (the tidyverse’s improved format for data frames). The element <code>observations</code> is specific for this API, so if we imported data from another source we’d have to check in which element the desired content would be stored.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="tidyverse.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb3-2"><a href="tidyverse.html#cb3-2" aria-hidden="true" tabindex="-1"></a>cpi_request <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(<span class="at">url =</span> api_request)</span>
+<span id="cb3-3"><a href="tidyverse.html#cb3-3" aria-hidden="true" tabindex="-1"></a>cpi_content <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">content</span>(cpi_request, <span class="at">as =</span> <span class="st">&#39;text&#39;</span>)</span>
+<span id="cb3-4"><a href="tidyverse.html#cb3-4" aria-hidden="true" tabindex="-1"></a>cpi_list    <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(cpi_content, <span class="at">flatten =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-5"><a href="tidyverse.html#cb3-5" aria-hidden="true" tabindex="-1"></a>cpi_tbl     <span class="ot">&lt;-</span> cpi_list[[<span class="st">&#39;observations&#39;</span>]] <span class="sc">%&gt;%</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>()</span>
+<span id="cb3-6"><a href="tidyverse.html#cb3-6" aria-hidden="true" tabindex="-1"></a>cpi_tbl</span></code></pre></div>
+<pre><code>## # A tibble: 144 × 4
+##    realtime_start realtime_end date       value              
+##    &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;              
+##  1 2022-02-01     2022-02-01   2010-01-01 0.34174735701485   
+##  2 2022-02-01     2022-02-01   2010-02-01 0.024920738207648  
+##  3 2022-02-01     2022-02-01   2010-03-01 0.410628353657108  
+##  4 2022-02-01     2022-02-01   2010-04-01 0.173688491069743  
+##  5 2022-02-01     2022-02-01   2010-05-01 0.0775197354237721 
+##  6 2022-02-01     2022-02-01   2010-06-01 -0.0976267084673888
+##  7 2022-02-01     2022-02-01   2010-07-01 0.0211043057371509 
+##  8 2022-02-01     2022-02-01   2010-08-01 0.138066427840807  
+##  9 2022-02-01     2022-02-01   2010-09-01 0.0581736230715569 
+## 10 2022-02-01     2022-02-01   2010-10-01 0.124519888847696  
+## # … with 134 more rows</code></pre>
+<p>This concludes our section on how to import data. If you’re struggling with other types of data, Tidyverse’s official <a href="https://www.tidyverse.org/packages/#import">website</a> provides a comprehensive list of all the supported file formats and the respective packages used to handle them.</p>
+</div>
+</div>
+<div id="wrangle" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Wrangle</h2>
+<p>This is by far the most important section in this Chapter. The main goal here is to provide a general sense of how to get raw data ready to use. For this, we’ll focus on the roles of the main functions inside the core packages rather than the idiosyncrasies and generalizations of each one. A deeper approach will be taken in the next chapters.</p>
+<div id="data-manipulation" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Data manipulation</h3>
+<p>Let’s use the COVID data we read in the last section. Starting with the <code>glimpse</code> function to have a grasp of the data, we can see some useful information such as the number of rows and columns, as well as columns’ names and classes (whether they’re character, double, etc).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="tidyverse.html#cb5-1" aria-hidden="true" tabindex="-1"></a>covid_data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;data/owid-covid-data.csv&#39;</span>)</span>
+<span id="cb5-2"><a href="tidyverse.html#cb5-2" aria-hidden="true" tabindex="-1"></a>covid_data <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="tidyverse.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 148,800
+## Columns: 67
+## $ iso_code                                   &lt;chr&gt; &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;,…
+## $ continent                                  &lt;chr&gt; &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;As…
+## $ location                                   &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Afghanistan…
+## $ date                                       &lt;date&gt; 2020-02-24, 2020-02-25, 20…
+## $ total_cases                                &lt;dbl&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, …
+## $ new_cases                                  &lt;dbl&gt; 5, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ new_cases_smoothed                         &lt;dbl&gt; NA, NA, NA, NA, NA, 0.714, …
+## $ total_deaths                               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_deaths                                 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_deaths_smoothed                        &lt;dbl&gt; NA, NA, NA, NA, NA, 0, 0, 0…
+## $ total_cases_per_million                    &lt;dbl&gt; 0.126, 0.126, 0.126, 0.126,…
+## $ new_cases_per_million                      &lt;dbl&gt; 0.126, 0.000, 0.000, 0.000,…
+## $ new_cases_smoothed_per_million             &lt;dbl&gt; NA, NA, NA, NA, NA, 0.018, …
+## $ total_deaths_per_million                   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_deaths_per_million                     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_deaths_smoothed_per_million            &lt;dbl&gt; NA, NA, NA, NA, NA, 0, 0, 0…
+## $ reproduction_rate                          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ icu_patients                               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ icu_patients_per_million                   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ hosp_patients                              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ hosp_patients_per_million                  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ weekly_icu_admissions                      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ weekly_icu_admissions_per_million          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ weekly_hosp_admissions                     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ weekly_hosp_admissions_per_million         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_tests                                  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ total_tests                                &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ total_tests_per_thousand                   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_tests_per_thousand                     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_tests_smoothed                         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_tests_smoothed_per_thousand            &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ positive_rate                              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ tests_per_case                             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ tests_units                                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ total_vaccinations                         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ people_vaccinated                          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ people_fully_vaccinated                    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ total_boosters                             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_vaccinations                           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_vaccinations_smoothed                  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ total_vaccinations_per_hundred             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ people_vaccinated_per_hundred              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ people_fully_vaccinated_per_hundred        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ total_boosters_per_hundred                 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_vaccinations_smoothed_per_million      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_people_vaccinated_smoothed             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ new_people_vaccinated_smoothed_per_hundred &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ stringency_index                           &lt;dbl&gt; 8.33, 8.33, 8.33, 8.33, 8.3…
+## $ population                                 &lt;dbl&gt; 39835428, 39835428, 3983542…
+## $ population_density                         &lt;dbl&gt; 54.422, 54.422, 54.422, 54.…
+## $ median_age                                 &lt;dbl&gt; 18.6, 18.6, 18.6, 18.6, 18.…
+## $ aged_65_older                              &lt;dbl&gt; 2.581, 2.581, 2.581, 2.581,…
+## $ aged_70_older                              &lt;dbl&gt; 1.337, 1.337, 1.337, 1.337,…
+## $ gdp_per_capita                             &lt;dbl&gt; 1803.987, 1803.987, 1803.98…
+## $ extreme_poverty                            &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ cardiovasc_death_rate                      &lt;dbl&gt; 597.029, 597.029, 597.029, …
+## $ diabetes_prevalence                        &lt;dbl&gt; 9.59, 9.59, 9.59, 9.59, 9.5…
+## $ female_smokers                             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ male_smokers                               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ handwashing_facilities                     &lt;dbl&gt; 37.746, 37.746, 37.746, 37.…
+## $ hospital_beds_per_thousand                 &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 0.…
+## $ life_expectancy                            &lt;dbl&gt; 64.83, 64.83, 64.83, 64.83,…
+## $ human_development_index                    &lt;dbl&gt; 0.511, 0.511, 0.511, 0.511,…
+## $ excess_mortality_cumulative_absolute       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ excess_mortality_cumulative                &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ excess_mortality                           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…
+## $ excess_mortality_cumulative_per_million    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA,…</code></pre>
+<p>We’re usually not interested in all of these data, so the first couple of tasks we’d like to perform is to filter the relevant categories and select the desired columns. For example, we could be interested in analyzing new COVID cases (column <code>new_cases</code>) only in Brazil (rows equal to <code>Brazil</code> in column <code>location</code>). Furthermore, we’d like to get rid of duplicate rows if there’s any.</p>
+<p>One of the great contributions of tidyverse is to assign names to the functions according to the actions they perform – many are admittedly SQL-inspired. <code>distinct</code> select only unique rows from a data set, thus dropping duplicates. <code>select</code> picks variables based on their names, whereas <code>filter</code> retains the rows which satisfy a given condition – or a set of conditions.</p>
+<p>Conditions are sentences which returns <code>TRUE</code> or <code>FALSE</code>. It’s straightforward to think of conditions using logical operators, such as <code>==</code>, <code>&gt;</code>, <code>&lt;</code>, etc. Nevertheless, there’s a bunch of expressions in R which return <code>TRUE</code> or <code>FALSE</code>. Moreover, we can always create our own condition to suit the work purpose. We’ll see many examples throughout this book.</p>
+<p>We can use the code below to generate the desired subset of the data:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tidyverse.html#cb7-1" aria-hidden="true" tabindex="-1"></a>covid_data_01 <span class="ot">&lt;-</span> covid_data <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="tidyverse.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="tidyverse.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(date, continent, location, new_cases) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="tidyverse.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(location <span class="sc">==</span> <span class="st">&#39;Brazil&#39;</span>)</span></code></pre></div>
+<p>Next, we’d probably need to create additional columns. For instance, suppose that actual new cases in Brazil are much higher than reported because the country doesn’t have enough tests and a conservative estimate points to a number of, at least, twice the official count. So we’d like to add a column which is twice the value of the original one representing our guess of the real situation. In addition, we’d also like to create a column to indicate the dominant strain at each period of time. We know that the Delta strain took over Gamma by the end of July 2021 and, then, Omicron took over Delta in the beginning of 2022.</p>
+<p><code>mutate</code> can be used to create new variables as a function of existing variables, but not necessarily. Also, it can be used to modify existing variables as new variables overwrites existing variables of the same name. <code>case_when</code> is another SQL-inspired function used inside <code>mutate</code> to create a new variable based on conditions. It’s worth noting that it’ll return <code>NA</code> if no condition is met. In this case, a useful workaround is to define an extra condition as <code>TRUE ~ value</code>, thus assigning a value to all the unmet conditions – think of this as an <strong>else</strong> condition.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="tidyverse.html#cb8-1" aria-hidden="true" tabindex="-1"></a>covid_data_02 <span class="ot">&lt;-</span> covid_data_01 <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="tidyverse.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb8-3"><a href="tidyverse.html#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">real_new_cases =</span> new_cases<span class="sc">*</span><span class="dv">2</span>,</span>
+<span id="cb8-4"><a href="tidyverse.html#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">dominant_strain  =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb8-5"><a href="tidyverse.html#cb8-5" aria-hidden="true" tabindex="-1"></a>      date <span class="sc">&lt;=</span> <span class="st">&#39;2021-07-31&#39;</span>                        <span class="sc">~</span> <span class="st">&#39;Gamma&#39;</span>,</span>
+<span id="cb8-6"><a href="tidyverse.html#cb8-6" aria-hidden="true" tabindex="-1"></a>      date <span class="sc">&gt;</span>  <span class="st">&#39;2021-07-31&#39;</span> <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="st">&#39;2021-12-31&#39;</span> <span class="sc">~</span> <span class="st">&#39;Delta&#39;</span>,</span>
+<span id="cb8-7"><a href="tidyverse.html#cb8-7" aria-hidden="true" tabindex="-1"></a>      date <span class="sc">&gt;</span>  <span class="st">&#39;2021-12-31&#39;</span> <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="st">&#39;2022-02-01&#39;</span> <span class="sc">~</span> <span class="st">&#39;Omicron&#39;</span>,</span>
+<span id="cb8-8"><a href="tidyverse.html#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                                        <span class="sc">~</span> <span class="st">&quot;We don&#39;t know&quot;</span></span>
+<span id="cb8-9"><a href="tidyverse.html#cb8-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-10"><a href="tidyverse.html#cb8-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>So far we’ve worked on a single group of data: new cases in Brazil. However, we usually have many categories to work on. We might be interested in analyzing new cases in all European countries. In this case, we’ll need the <code>group_by</code> function, which allows us to perform any operation by group. <code>group_by</code> is often used in conjunction with <code>mutate</code> or <code>summarise</code> to create new data for each group. The latter uses aggregate functions (<code>mean</code>, <code>max</code>, <code>min</code>, etc) to produce a summary of the data.</p>
+<p>For example, suppose we want to know which European country recorded the highest number of new covid cases in a single day by the end of 2021. This might be achieved by grouping the data by location and then using <code>summarise</code> with <code>max</code>. In addition, we can use <code>arrange</code> to sort the rows by value (we use <code>desc</code> to sort in descending order). Don’t forget to <code>ungroup</code> data as soon as you no longer need to perform operations by group.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tidyverse.html#cb9-1" aria-hidden="true" tabindex="-1"></a>covid_data_03 <span class="ot">&lt;-</span> covid_data <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="tidyverse.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="tidyverse.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">&#39;Europe&#39;</span>,</span>
+<span id="cb9-4"><a href="tidyverse.html#cb9-4" aria-hidden="true" tabindex="-1"></a>                date <span class="sc">&lt;=</span> <span class="st">&#39;2021-12-31&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="tidyverse.html#cb9-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(location) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="tidyverse.html#cb9-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">max_new_cases =</span> <span class="fu">max</span>(new_cases)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-7"><a href="tidyverse.html#cb9-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb9-8"><a href="tidyverse.html#cb9-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(max_new_cases))</span></code></pre></div>
+<p>Note that some countries such as Spain, Portugal and France returned <code>NA</code>. This happened because they probably have any missing value. We could easily ignore it by passing the argument <code>na.rm = TRUE</code> to the <code>max</code> function. However, another problem would arise: countries with no data on new cases would return <code>-Inf</code>. To get around these two issues, we can filter out all the missing values in the data set (the <code>!</code> before the condition works as a negation). In this case removing the missing values isn’t a problem, but be aware that for some tasks this may influence the outcome.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="tidyverse.html#cb10-1" aria-hidden="true" tabindex="-1"></a>covid_data_04 <span class="ot">&lt;-</span> covid_data <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="tidyverse.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="tidyverse.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">&#39;Europe&#39;</span>,</span>
+<span id="cb10-4"><a href="tidyverse.html#cb10-4" aria-hidden="true" tabindex="-1"></a>                date <span class="sc">&lt;=</span> <span class="st">&#39;2021-12-31&#39;</span>,</span>
+<span id="cb10-5"><a href="tidyverse.html#cb10-5" aria-hidden="true" tabindex="-1"></a>                <span class="sc">!</span><span class="fu">is.na</span>(new_cases)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-6"><a href="tidyverse.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(location) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-7"><a href="tidyverse.html#cb10-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">max_new_cases =</span> <span class="fu">max</span>(new_cases)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-8"><a href="tidyverse.html#cb10-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
+<span id="cb10-9"><a href="tidyverse.html#cb10-9" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb10-10"><a href="tidyverse.html#cb10-10" aria-hidden="true" tabindex="-1"></a>covid_data_04     </span></code></pre></div>
+<pre><code>## # A tibble: 49 × 2
+##    location               max_new_cases
+##    &lt;chr&gt;                          &lt;dbl&gt;
+##  1 Albania                         1239
+##  2 Andorra                          696
+##  3 Austria                        15809
+##  4 Belarus                         2097
+##  5 Belgium                        47836
+##  6 Bosnia and Herzegovina          3755
+##  7 Bulgaria                        7560
+##  8 Croatia                         7315
+##  9 Cyprus                          1909
+## 10 Czechia                        27793
+## # … with 39 more rows</code></pre>
+<p>In addition, we might want to know not only what the highest numbers were but when they did occur (the peak date). Since the <code>summarise</code> function is designed to return a single value, we must use an expression which returns a single value. If we used <code>date = max(date)</code>, we’d keep the most recent date for the data in each country. Definitely, that’s not what we want. So a good way to address this issue is to combine a subset operation with a condition inside. In simpler terms, we’ll subset from the column date the observation where new cases were at their high. Since we can have multiple dates which satisfy this condition, we’ll keep the most recent one (the <code>max</code> of them).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="tidyverse.html#cb12-1" aria-hidden="true" tabindex="-1"></a>covid_data_05 <span class="ot">&lt;-</span> covid_data <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="tidyverse.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="tidyverse.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">&#39;Europe&#39;</span>,</span>
+<span id="cb12-4"><a href="tidyverse.html#cb12-4" aria-hidden="true" tabindex="-1"></a>                date <span class="sc">&lt;=</span> <span class="st">&#39;2021-12-31&#39;</span>,</span>
+<span id="cb12-5"><a href="tidyverse.html#cb12-5" aria-hidden="true" tabindex="-1"></a>                <span class="sc">!</span><span class="fu">is.na</span>(new_cases)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href="tidyverse.html#cb12-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(location) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-7"><a href="tidyverse.html#cb12-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">max_new_cases =</span> <span class="fu">max</span>(new_cases),</span>
+<span id="cb12-8"><a href="tidyverse.html#cb12-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">peak_date =</span> date[<span class="fu">which</span>(new_cases <span class="sc">==</span> max_new_cases)],</span>
+<span id="cb12-9"><a href="tidyverse.html#cb12-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">peak_date =</span> <span class="fu">max</span>(peak_date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-10"><a href="tidyverse.html#cb12-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-11"><a href="tidyverse.html#cb12-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(peak_date) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-12"><a href="tidyverse.html#cb12-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb12-13"><a href="tidyverse.html#cb12-13" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb12-14"><a href="tidyverse.html#cb12-14" aria-hidden="true" tabindex="-1"></a>covid_data_05   </span></code></pre></div>
+<pre><code>## # A tibble: 10 × 3
+##    location   max_new_cases peak_date 
+##    &lt;chr&gt;              &lt;dbl&gt; &lt;date&gt;    
+##  1 Vatican                7 2020-10-15
+##  2 Vatican                7 2020-10-15
+##  3 Luxembourg          1967 2020-11-02
+##  4 Montenegro           874 2020-11-04
+##  5 Italy              40902 2020-11-13
+##  6 Sweden             32485 2020-12-29
+##  7 Gibraltar            180 2020-12-30
+##  8 Lithuania           3984 2020-12-30
+##  9 Ireland             8227 2021-01-08
+## 10 Spain              93822 2021-01-25</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tidyverse.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificar depois por que Vaticano aparece com 2 entradas</span></span></code></pre></div>
+<p>In case it went unnoticed, the previous code showed a really nice feature of <code>mutate</code>/<code>summarise</code>: you can use a variable you’ve just created in a subsequent task inside the same calling. In this example, we used the maximum number of new cases (first variable created) as a reference to obtain the dates when it occurred (second variable created) and them picked only the maximum date from a possibly set of dates (third variable created), all of this inside the same <code>summarise</code> calling as if all steps were performed sequentially.</p>
+<p>Finally, we used <code>arrange</code> to sort countries by their peak date (this time by ascending order, the default) and then <code>slice</code> to subset only the first ten countries out of the forty-nine in our data set.</p>
+<p><strong>Falar dos joins, bind-rows/cols</strong></p>
+</div>
+<div id="data-layout" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Data layout</h3>
+<p>We’ve walked through all the main functions of <code>dplyr</code>. Now, we turn to the <code>tidyr</code> package. According to tidyverse’s website, the goal of <code>tidyr</code> is to help us create <strong>tidy data</strong>. It means a data set where every column is a variable; every row is an observation; and each cell is a single value. This is more like a convention created by tidyverse so that <em>“you’ll spend less time fighting with the tools and more time working on your analysis”</em>.</p>
+<p>Tidy data is also known as <strong>wide</strong> format – since it increases the number of columns and decreases the number of rows –, as opposed to the <strong>long</strong> format, where data are stacked increasing the number of rows and decreasing the number of columns. It took me a while before I could tell if a data set was in wide or long format, so don’t worry if it’s not so clear right now. Perhaps a more direct way of thinking about this distinction is to ask yourself: <em>Is all the information contained in a single cell?</em>. If yes, it’s wide format. If not, it’s long format.</p>
+<p>For example, is the covid data set in wide or long format? If we took a single cell from the <strong>new_cases</strong> column, does it convey all the information for this variable? No, it doesn’t. We know the number of new cases in a given date, but we don’t know the country that value refers to – is this from Germany? Nigeria? Chile?</p>
+<p>We can use <code>tidyr::pivot_wider</code> to convert from long to wide format. The syntax is very easy to understand: <code>names_from</code> is the column we want to widen, whereas <code>values_from</code> is the column containing the observations that will fill each cell. <code>id_cols</code> is an optional argument used to declare the set of columns that uniquely identifies each observation. In practice, it drops all the other columns in the data set. Hence, if we want to keep all the other variables, just skip it.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="tidyverse.html#cb15-1" aria-hidden="true" tabindex="-1"></a>covid_wide_01 <span class="ot">&lt;-</span> covid_data <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="tidyverse.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">id_cols     =</span> <span class="fu">c</span>(<span class="st">&#39;date&#39;</span>, <span class="st">&#39;location&#39;</span>), </span>
+<span id="cb15-3"><a href="tidyverse.html#cb15-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">names_from  =</span> <span class="st">&#39;location&#39;</span>, </span>
+<span id="cb15-4"><a href="tidyverse.html#cb15-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_from =</span> <span class="st">&#39;new_cases&#39;</span>)</span>
+<span id="cb15-5"><a href="tidyverse.html#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="tidyverse.html#cb15-6" aria-hidden="true" tabindex="-1"></a>covid_wide_01</span></code></pre></div>
+<pre><code>## # A tibble: 720 × 239
+##    date       Afghanistan Africa Albania Algeria Andorra Angola Anguilla
+##    &lt;date&gt;           &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+##  1 2020-02-24           5      0      NA      NA      NA     NA       NA
+##  2 2020-02-25           0      1      NA       1      NA     NA       NA
+##  3 2020-02-26           0      0      NA       0      NA     NA       NA
+##  4 2020-02-27           0      0      NA       0      NA     NA       NA
+##  5 2020-02-28           0      1      NA       0      NA     NA       NA
+##  6 2020-02-29           0      0      NA       0      NA     NA       NA
+##  7 2020-03-01           0      1      NA       0      NA     NA       NA
+##  8 2020-03-02           0      4      NA       2       1     NA       NA
+##  9 2020-03-03           0      3      NA       2       0     NA       NA
+## 10 2020-03-04           0     10      NA       7       0     NA       NA
+## # … with 710 more rows, and 231 more variables: Antigua and Barbuda &lt;dbl&gt;,
+## #   Argentina &lt;dbl&gt;, Armenia &lt;dbl&gt;, Aruba &lt;dbl&gt;, Asia &lt;dbl&gt;, Australia &lt;dbl&gt;,
+## #   Austria &lt;dbl&gt;, Azerbaijan &lt;dbl&gt;, Bahamas &lt;dbl&gt;, Bahrain &lt;dbl&gt;,
+## #   Bangladesh &lt;dbl&gt;, Barbados &lt;dbl&gt;, Belarus &lt;dbl&gt;, Belgium &lt;dbl&gt;,
+## #   Belize &lt;dbl&gt;, Benin &lt;dbl&gt;, Bermuda &lt;dbl&gt;, Bhutan &lt;dbl&gt;, Bolivia &lt;dbl&gt;,
+## #   Bonaire Sint Eustatius and Saba &lt;dbl&gt;, Bosnia and Herzegovina &lt;dbl&gt;,
+## #   Botswana &lt;dbl&gt;, Brazil &lt;dbl&gt;, British Virgin Islands &lt;dbl&gt;, Brunei &lt;dbl&gt;, …</code></pre>
+<p>Notice that now we have 239 columns rather than 67 of the original data set with each cell conveying the whole information: new cases for a given date for a specific country. So, what if we wanted to have both <code>new_cases</code> and <code>new_deaths</code> columns in wide form? We just need to provide a vector with the desired variables in <code>values_from</code>. By default, the new columns are named according to the following pattern: <strong>variable_location</strong>.</p>
+<p>Since the variables names already contain an underscore, it’s a good idea to set the names separator to another character. This is because many functions have a “names separator” argument, thus it’s much easier to use it if we have a unique separator character. Otherwise, we’d have to use regular expression to inform the specific position of the character – for example, whether it’s the first or the second underscore.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="tidyverse.html#cb17-1" aria-hidden="true" tabindex="-1"></a>covid_wide_02 <span class="ot">&lt;-</span> covid_data <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="tidyverse.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">id_cols     =</span> <span class="fu">c</span>(<span class="st">&#39;date&#39;</span>, <span class="st">&#39;location&#39;</span>), </span>
+<span id="cb17-3"><a href="tidyverse.html#cb17-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">names_from  =</span> <span class="st">&#39;location&#39;</span>, </span>
+<span id="cb17-4"><a href="tidyverse.html#cb17-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_from =</span> <span class="fu">c</span>(<span class="st">&#39;new_cases&#39;</span>, <span class="st">&#39;new_deaths&#39;</span>),</span>
+<span id="cb17-5"><a href="tidyverse.html#cb17-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">names_sep   =</span> <span class="st">&#39;-&#39;</span>)</span>
+<span id="cb17-6"><a href="tidyverse.html#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="tidyverse.html#cb17-7" aria-hidden="true" tabindex="-1"></a>covid_wide_02</span></code></pre></div>
+<pre><code>## # A tibble: 720 × 477
+##    date       `new_cases-Afghanistan` `new_cases-Africa` `new_cases-Albania`
+##    &lt;date&gt;                       &lt;dbl&gt;              &lt;dbl&gt;               &lt;dbl&gt;
+##  1 2020-02-24                       5                  0                  NA
+##  2 2020-02-25                       0                  1                  NA
+##  3 2020-02-26                       0                  0                  NA
+##  4 2020-02-27                       0                  0                  NA
+##  5 2020-02-28                       0                  1                  NA
+##  6 2020-02-29                       0                  0                  NA
+##  7 2020-03-01                       0                  1                  NA
+##  8 2020-03-02                       0                  4                  NA
+##  9 2020-03-03                       0                  3                  NA
+## 10 2020-03-04                       0                 10                  NA
+## # … with 710 more rows, and 473 more variables: new_cases-Algeria &lt;dbl&gt;,
+## #   new_cases-Andorra &lt;dbl&gt;, new_cases-Angola &lt;dbl&gt;, new_cases-Anguilla &lt;dbl&gt;,
+## #   new_cases-Antigua and Barbuda &lt;dbl&gt;, new_cases-Argentina &lt;dbl&gt;,
+## #   new_cases-Armenia &lt;dbl&gt;, new_cases-Aruba &lt;dbl&gt;, new_cases-Asia &lt;dbl&gt;,
+## #   new_cases-Australia &lt;dbl&gt;, new_cases-Austria &lt;dbl&gt;,
+## #   new_cases-Azerbaijan &lt;dbl&gt;, new_cases-Bahamas &lt;dbl&gt;,
+## #   new_cases-Bahrain &lt;dbl&gt;, new_cases-Bangladesh &lt;dbl&gt;, …</code></pre>
+<p>Our new data set expanded to 477 columns. As we create more and more columns to arrange more variables it becomes harder to perform some simple tasks. For example, it’s much easier to use <code>group_by</code> with <code>mutate</code> or <code>summarise</code> when we have the data set in long format. In addition, using <code>filter</code> is generally easier than using a conditional <code>select</code> when we want to keep only the relevant data.</p>
+<p>In summary, long format may be preferable over wide format when the data set contains more than one grouping variable or we want to work on more than one variable. Besides, long format data sets are ideal for plotting with <code>ggplot2</code> package as we’ll see later. Therefore, it’s not unusual to convert a data set from wide to long format.</p>
+<p>The syntax is very similar to what we saw earlier when converting from long to wide format. The unique difference is in <code>cols</code> argument, used to declare what columns we want to stack. However, since wide data sets usually have a large number of columns and we’re often interested in putting all of them in long format, it’s much easier to declare what columns we want to leave out (<code>-</code>).</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tidyverse.html#cb19-1" aria-hidden="true" tabindex="-1"></a>covid_long_01 <span class="ot">&lt;-</span> covid_wide_02 <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="tidyverse.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols      =</span> <span class="sc">-</span><span class="st">&#39;date&#39;</span>,</span>
+<span id="cb19-3"><a href="tidyverse.html#cb19-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">names_to  =</span> <span class="fu">c</span>(<span class="st">&#39;variable&#39;</span>, <span class="st">&#39;location&#39;</span>),</span>
+<span id="cb19-4"><a href="tidyverse.html#cb19-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_to =</span> <span class="st">&#39;value&#39;</span>,</span>
+<span id="cb19-5"><a href="tidyverse.html#cb19-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">names_sep =</span> <span class="st">&#39;-&#39;</span>)</span>
+<span id="cb19-6"><a href="tidyverse.html#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="tidyverse.html#cb19-7" aria-hidden="true" tabindex="-1"></a>covid_long_01</span></code></pre></div>
+<pre><code>## # A tibble: 342,720 × 4
+##    date       variable  location            value
+##    &lt;date&gt;     &lt;chr&gt;     &lt;chr&gt;               &lt;dbl&gt;
+##  1 2020-02-24 new_cases Afghanistan             5
+##  2 2020-02-24 new_cases Africa                  0
+##  3 2020-02-24 new_cases Albania                NA
+##  4 2020-02-24 new_cases Algeria                NA
+##  5 2020-02-24 new_cases Andorra                NA
+##  6 2020-02-24 new_cases Angola                 NA
+##  7 2020-02-24 new_cases Anguilla               NA
+##  8 2020-02-24 new_cases Antigua and Barbuda    NA
+##  9 2020-02-24 new_cases Argentina              NA
+## 10 2020-02-24 new_cases Armenia                NA
+## # … with 342,710 more rows</code></pre>
+<p>Note that now even the variables (new_cases and new_deaths) are stored in a single column (variable). This is probably an abuse of language, but I call this a complete long format – as opposed to the original format where the data set was only partially in the long format (the variables were indeed in wide format). For most applications, I think this is the best way to organize the data.</p>
+<p>Converting a data set between wide and long formats might not completely solve our problem. Sometimes, two pieces of information are merged in a single column. For example, suppose that the <code>location</code> column had both the continent and country names instead of only the country as in the original data set. We’ll call this data set <code>covid_loc_cont</code></p>
+<pre><code>## # A tibble: 139,819 × 4
+##    location         date       new_cases new_deaths
+##    &lt;chr&gt;            &lt;date&gt;         &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Afghanistan_Asia 2020-02-24         5         NA
+##  2 Afghanistan_Asia 2020-02-25         0         NA
+##  3 Afghanistan_Asia 2020-02-26         0         NA
+##  4 Afghanistan_Asia 2020-02-27         0         NA
+##  5 Afghanistan_Asia 2020-02-28         0         NA
+##  6 Afghanistan_Asia 2020-02-29         0         NA
+##  7 Afghanistan_Asia 2020-03-01         0         NA
+##  8 Afghanistan_Asia 2020-03-02         0         NA
+##  9 Afghanistan_Asia 2020-03-03         0         NA
+## 10 Afghanistan_Asia 2020-03-04         0         NA
+## # … with 139,809 more rows</code></pre>
+<p>This is undesirable since we can no longer use <code>group by</code> or <code>filter</code> over continent alone, for instance. Hence, the best practice is to have a single column for each variable. This can be easily achieved using the <code>separate</code> function, with a highly self-explanatory syntax.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="tidyverse.html#cb22-1" aria-hidden="true" tabindex="-1"></a>covid_separate_01 <span class="ot">&lt;-</span> covid_loc_cont <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="tidyverse.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="tidyverse.html#cb22-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate</span>(<span class="at">col  =</span> <span class="st">&#39;location&#39;</span>,</span>
+<span id="cb22-4"><a href="tidyverse.html#cb22-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&#39;location&#39;</span>, <span class="st">&#39;continent&#39;</span>),</span>
+<span id="cb22-5"><a href="tidyverse.html#cb22-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep  =</span> <span class="st">&#39;_&#39;</span>)</span>
+<span id="cb22-6"><a href="tidyverse.html#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="tidyverse.html#cb22-7" aria-hidden="true" tabindex="-1"></a>covid_separate_01</span></code></pre></div>
+<pre><code>## # A tibble: 139,819 × 5
+##    location    continent date       new_cases new_deaths
+##    &lt;chr&gt;       &lt;chr&gt;     &lt;date&gt;         &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Afghanistan Asia      2020-02-24         5         NA
+##  2 Afghanistan Asia      2020-02-25         0         NA
+##  3 Afghanistan Asia      2020-02-26         0         NA
+##  4 Afghanistan Asia      2020-02-27         0         NA
+##  5 Afghanistan Asia      2020-02-28         0         NA
+##  6 Afghanistan Asia      2020-02-29         0         NA
+##  7 Afghanistan Asia      2020-03-01         0         NA
+##  8 Afghanistan Asia      2020-03-02         0         NA
+##  9 Afghanistan Asia      2020-03-03         0         NA
+## 10 Afghanistan Asia      2020-03-04         0         NA
+## # … with 139,809 more rows</code></pre>
+<p>The only caveat to all this simplicity is when we have non-trivial separators. For example, imagine that we had no underscore to separate location from continent.</p>
+<pre><code>## # A tibble: 139,819 × 4
+##    location        date       new_cases new_deaths
+##    &lt;chr&gt;           &lt;date&gt;         &lt;dbl&gt;      &lt;dbl&gt;
+##  1 AfghanistanAsia 2020-02-24         5         NA
+##  2 AfghanistanAsia 2020-02-25         0         NA
+##  3 AfghanistanAsia 2020-02-26         0         NA
+##  4 AfghanistanAsia 2020-02-27         0         NA
+##  5 AfghanistanAsia 2020-02-28         0         NA
+##  6 AfghanistanAsia 2020-02-29         0         NA
+##  7 AfghanistanAsia 2020-03-01         0         NA
+##  8 AfghanistanAsia 2020-03-02         0         NA
+##  9 AfghanistanAsia 2020-03-03         0         NA
+## 10 AfghanistanAsia 2020-03-04         0         NA
+## # … with 139,809 more rows</code></pre>
+<p>How could we manage to separate them? Ideally, we should provide a regular expression (regex) to match the pattern we want to use to split the string into location and continent (the <code>sep</code> argument works with regex). At first glance, a natural choice would be to split the string as of the second uppercase letter. However, this would fail for several countries: United States, New Zealand and many others.</p>
+<p>At the time this book is being written, I confess I don’t know how to build this specific regular expression. More often than not, the direct solution is the most difficult (or we simply don’t know how) to implement and so we have to think about alternative answers. Data science is all about this.</p>
+<p>My workaround for this case is rather ingenious: I know how to subset the first letter of a string. In addition, I also know how to catch a string starting by a uppercase letter.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="tidyverse.html#cb25-1" aria-hidden="true" tabindex="-1"></a>covid_separate_02 <span class="ot">&lt;-</span> covid_loc_cont2 <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="tidyverse.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate</span>(<span class="at">col  =</span> <span class="st">&#39;location&#39;</span>,</span>
+<span id="cb25-3"><a href="tidyverse.html#cb25-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&#39;location&#39;</span>, <span class="st">&#39;continent&#39;</span>),</span>
+<span id="cb25-4"><a href="tidyverse.html#cb25-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep  =</span> <span class="st">&#39;(?=[A-Z](?!.*[A-Z].*))&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-5"><a href="tidyverse.html#cb25-5" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">separate</span>(<span class="at">col  =</span> <span class="st">&#39;location&#39;</span>,</span>
+<span id="cb25-6"><a href="tidyverse.html#cb25-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&#39;location&#39;</span>, <span class="st">&#39;cont_part1&#39;</span>),</span>
+<span id="cb25-7"><a href="tidyverse.html#cb25-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep  =</span> <span class="st">&#39;(?=[A-Z](?!.*[A-Z].*))&#39;</span>) </span></code></pre></div>
+<p>Falar de unite, separate e nest</p>
+<p>Falar de tidyr, stringr, purrr, ggpplot.</p>
+<p>Uma seção dedicada a missing values: como visualizar e preencher?</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="google.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["RBook.pdf", "RBook.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Google Mobility | Book’s title</title>
+  <meta name="description" content="Book on Data Science using R by J. Renato Leripio" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Google Mobility | Book’s title" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Book on Data Science using R by J. Renato Leripio" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Google Mobility | Book’s title" />
+  
+  <meta name="twitter:description" content="Book on Data Science using R by J. Renato Leripio" />
+  
+
+<meta name="author" content="J. Renato Leripio" />
+
+
+<meta name="date" content="2022-02-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tidyverse.html"/>
+<link rel="next" href="owidCovid.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Book on Data Science using R by J. Renato Leripio</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i><b>2</b> The basics of Tidyverse</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tidyverse.html"><a href="tidyverse.html#whats-tidyverse"><i class="fa fa-check"></i><b>2.1</b> What’s tidyverse?</a></li>
+<li class="chapter" data-level="2.2" data-path="tidyverse.html"><a href="tidyverse.html#import"><i class="fa fa-check"></i><b>2.2</b> Import</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="tidyverse.html"><a href="tidyverse.html#reading-from-files"><i class="fa fa-check"></i><b>2.2.1</b> Reading from files</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tidyverse.html"><a href="tidyverse.html#reading-from-api"><i class="fa fa-check"></i><b>2.2.2</b> Reading from API</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="tidyverse.html"><a href="tidyverse.html#wrangle"><i class="fa fa-check"></i><b>2.3</b> Wrangle</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="tidyverse.html"><a href="tidyverse.html#data-manipulation"><i class="fa fa-check"></i><b>2.3.1</b> Data manipulation</a></li>
+<li class="chapter" data-level="2.3.2" data-path="tidyverse.html"><a href="tidyverse.html#data-layout"><i class="fa fa-check"></i><b>2.3.2</b> Data layout</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="google.html"><a href="google.html"><i class="fa fa-check"></i><b>3</b> Google Mobility</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="google.html"><a href="google.html#importing-data"><i class="fa fa-check"></i><b>3.1</b> Importing data</a></li>
+<li class="chapter" data-level="3.2" data-path="google.html"><a href="google.html#preparing-the-data"><i class="fa fa-check"></i><b>3.2</b> Preparing the data</a></li>
+<li class="chapter" data-level="3.3" data-path="google.html"><a href="google.html#plot-information"><i class="fa fa-check"></i><b>3.3</b> Plot information</a></li>
+<li class="chapter" data-level="3.4" data-path="google.html"><a href="google.html#from-code-to-function"><i class="fa fa-check"></i><b>3.4</b> From code to function</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="owidCovid.html"><a href="owidCovid.html"><i class="fa fa-check"></i><b>4</b> Our World in Data COVID</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="owidCovid.html"><a href="owidCovid.html#importing-data-1"><i class="fa fa-check"></i><b>4.1</b> Importing data</a></li>
+<li class="chapter" data-level="4.2" data-path="owidCovid.html"><a href="owidCovid.html#preparing-the-data-1"><i class="fa fa-check"></i><b>4.2</b> Preparing the data</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Book’s title</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="google" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Google Mobility</h1>
+<p>For this exercise, we will use the Google Mobility data. Google started releasing this data on a daily basis right after the COVID outbreak spread across the world by mid-February 2020. Since then this data has been widely used for different purposes: from assessing/measuring economic activity to designing public policies. In spite of being a well-organized dataset, it does offer the opportunity to do real-life data wrangling and to explore good practices from importing through visualizing.</p>
+<div id="importing-data" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Importing data</h2>
+<p>Google offers two ways of downloading its mobility data: you can either get a unique .csv file with all the available countries or you can get a .zip file with a separate .csv file for each country. We will stick with the latter for two simple reasons. First, it is much more challenging to import many files at once and bind them together. Second, this kind of work comes up very often in everyday work.</p>
+<p>We begin by downloading the .zip file to the <code>data</code> folder.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="google.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(</span>
+<span id="cb26-2"><a href="google.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">url  =</span> <span class="st">&#39;https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip&#39;</span>,</span>
+<span id="cb26-3"><a href="google.html#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">destfile =</span> <span class="st">&#39;data/Region_Mobility_Report_CSVs.zip&#39;</span></span>
+<span id="cb26-4"><a href="google.html#cb26-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Now suppose we want to analyze a small group of countries. In this case, a better approach is to only import the .csv corresponding to these countries and then bind them together. After a brief inspection of the .zip file, we can see a clear pattern in filenames: <strong>year_country-code</strong>_Region_Mobility_Report.csv. For example, the file containing data for Brazil in 2021 is: <strong>2021_BR</strong>_Region_Mobility_Report.csv.</p>
+<p>So, our first task is to produce a vector with the desired filenames. This vector will be used later to extract the corresponding .csv from the .zip file. If you have enough experience with data science you may have already figured out a solution. Before taking it forward, stop for a while and think: is it general enough? What if Google kept releasing this data for years in the future, would your solution still work?</p>
+<p>In order to not get ourselves caught in this trap, we invoke <code>Sys.Date()</code> to recover the current year and use it as the end point of our sequence of years. Whether you are reading this book in 2022 or in 2030 and Google still releases mobility data with filenames following the same pattern, then you can safely use the solution below.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="google.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb27-2"><a href="google.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb27-3"><a href="google.html#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="google.html#cb27-4" aria-hidden="true" tabindex="-1"></a>countries_codes  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;BR&#39;</span>, <span class="st">&#39;US&#39;</span>, <span class="st">&#39;DE&#39;</span>, <span class="st">&#39;ZA&#39;</span>, <span class="st">&#39;SG&#39;</span>, <span class="st">&#39;AU&#39;</span>)</span>
+<span id="cb27-5"><a href="google.html#cb27-5" aria-hidden="true" tabindex="-1"></a>years            <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2020</span>, </span>
+<span id="cb27-6"><a href="google.html#cb27-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">to =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(<span class="fu">Sys.Date</span>()), </span>
+<span id="cb27-7"><a href="google.html#cb27-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb27-8"><a href="google.html#cb27-8" aria-hidden="true" tabindex="-1"></a>google_filenames <span class="ot">&lt;-</span> </span>
+<span id="cb27-9"><a href="google.html#cb27-9" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">cross2</span>(years, countries_codes) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-10"><a href="google.html#cb27-10" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map_chr</span>(<span class="at">.f =</span> <span class="cf">function</span>(x){</span>
+<span id="cb27-11"><a href="google.html#cb27-11" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">%&gt;%</span> </span>
+<span id="cb27-12"><a href="google.html#cb27-12" aria-hidden="true" tabindex="-1"></a>      glue<span class="sc">::</span><span class="fu">glue_collapse</span>(<span class="at">sep =</span> <span class="st">&#39;_&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-13"><a href="google.html#cb27-13" aria-hidden="true" tabindex="-1"></a>      glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;_Region_Mobility_Report.csv&#39;</span>)</span>
+<span id="cb27-14"><a href="google.html#cb27-14" aria-hidden="true" tabindex="-1"></a>  })</span></code></pre></div>
+<p>The <code>purrr::cross2</code> function creates all the combinations between codes and years we need to replicate the first part of the filenames. The final part is static, so it’s just a matter of pasting this piece into each element of the vector. We can check the result below:</p>
+<pre><code>##  [1] &quot;2020_BR_Region_Mobility_Report.csv&quot; &quot;2021_BR_Region_Mobility_Report.csv&quot;
+##  [3] &quot;2022_BR_Region_Mobility_Report.csv&quot; &quot;2020_US_Region_Mobility_Report.csv&quot;
+##  [5] &quot;2021_US_Region_Mobility_Report.csv&quot; &quot;2022_US_Region_Mobility_Report.csv&quot;
+##  [7] &quot;2020_DE_Region_Mobility_Report.csv&quot; &quot;2021_DE_Region_Mobility_Report.csv&quot;
+##  [9] &quot;2022_DE_Region_Mobility_Report.csv&quot; &quot;2020_ZA_Region_Mobility_Report.csv&quot;
+## [11] &quot;2021_ZA_Region_Mobility_Report.csv&quot; &quot;2022_ZA_Region_Mobility_Report.csv&quot;
+## [13] &quot;2020_SG_Region_Mobility_Report.csv&quot; &quot;2021_SG_Region_Mobility_Report.csv&quot;
+## [15] &quot;2022_SG_Region_Mobility_Report.csv&quot; &quot;2020_AU_Region_Mobility_Report.csv&quot;
+## [17] &quot;2021_AU_Region_Mobility_Report.csv&quot; &quot;2022_AU_Region_Mobility_Report.csv&quot;</code></pre>
+<p>To finish up, we now resort to the <code>purrr::map</code> function to extract each filename from the .zip file. At this stage, I would like to draw your attention for something very important. Remember that we are ultimately interested in binding together the twelve .csv files in <code>google_filenames</code>. Since Google’s files contain columns for both country and date, we could safely use <code>purrr::map_dfr</code> to automatically stack the data – it would save us a few lines of code.</p>
+<p>However, it could well be that these files do not contain identifying columns – this information being only in the filename. It happens more often than not in real-life applications. So, if we naively stacked these files we would never be able to distinguish which country or date period each piece of the resulting data frame refers to. Therefore, a better strategy in this case is:</p>
+<ol style="list-style-type: decimal">
+<li>Using the <code>purrr::map</code> function to import each file as an element in a list.</li>
+<li>Assigning meaningful names for each element of that list with <code>magrittr::set_names</code>.</li>
+<li>Invoking the <code>plyr::ldply</code> function to stack them.</li>
+</ol>
+<p>The <code>plyr::ldply</code> function is very convenient here because it carries the names of the elements in the list into the resulting data frame as a new column. In addition, it also has several other useful features such as applying a generic function to each element of the list before stacking it and parallel processing.</p>
+<p>In this example, the filenames contain both the country code and year for each dataset. Thankfully, we have a very simple pattern and we can extract the relevant information from the first seven characters of each element in our vector <code>google_filenames</code>. More complicated patterns would require the use of regular expressions (regex). We are now ready to perform our stacking safely.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="google.html#cb29-1" aria-hidden="true" tabindex="-1"></a>mobility_data <span class="ot">&lt;-</span> </span>
+<span id="cb29-2"><a href="google.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb29-3"><a href="google.html#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">.x =</span> google_filenames, </span>
+<span id="cb29-4"><a href="google.html#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">.f =</span> <span class="cf">function</span>(x){</span>
+<span id="cb29-5"><a href="google.html#cb29-5" aria-hidden="true" tabindex="-1"></a>      readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="fu">unz</span>(<span class="st">&#39;data/Region_Mobility_Report_CSVs.zip&#39;</span>, x))</span>
+<span id="cb29-6"><a href="google.html#cb29-6" aria-hidden="true" tabindex="-1"></a>      }) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-7"><a href="google.html#cb29-7" aria-hidden="true" tabindex="-1"></a>  magrittr<span class="sc">::</span><span class="fu">set_names</span>(stringr<span class="sc">::</span><span class="fu">str_sub</span>(google_filenames, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">7</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-8"><a href="google.html#cb29-8" aria-hidden="true" tabindex="-1"></a>  plyr<span class="sc">::</span><span class="fu">ldply</span>(<span class="at">.id =</span> <span class="st">&#39;year_country&#39;</span>)</span></code></pre></div>
+<p>Below the first four columns and five rows of the resulting data frame. We could make things as neat as possible by using the <code>purrr::separate</code> function to separate the <code>year_country</code> column into two columns: year and country. But since it is not a necessary step here (we already have these information from other columns), we will leave it as an exercise.</p>
+<pre><code>##   year_country country_region_code country_region sub_region_1
+## 1      2020_BR                  BR         Brazil         &lt;NA&gt;
+## 2      2020_BR                  BR         Brazil         &lt;NA&gt;
+## 3      2020_BR                  BR         Brazil         &lt;NA&gt;
+## 4      2020_BR                  BR         Brazil         &lt;NA&gt;
+## 5      2020_BR                  BR         Brazil         &lt;NA&gt;</code></pre>
+</div>
+<div id="preparing-the-data" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Preparing the data</h2>
+<p>Now the we have successfully imported the data for the selected countries, it is time to produce useful content. Let’s begin with a closer look on the structure of the dataset. I removed the <code>year_country</code> column since it was only for pedagogical purposes and we won’t need it.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="google.html#cb31-1" aria-hidden="true" tabindex="-1"></a>mobility_data <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="google.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 3,356,027
+## Columns: 15
+## $ country_region_code                                &lt;chr&gt; &quot;BR&quot;, &quot;BR&quot;, &quot;BR&quot;, &quot;…
+## $ country_region                                     &lt;chr&gt; &quot;Brazil&quot;, &quot;Brazil&quot;,…
+## $ sub_region_1                                       &lt;chr&gt; NA, NA, NA, NA, NA,…
+## $ sub_region_2                                       &lt;chr&gt; NA, NA, NA, NA, NA,…
+## $ metro_area                                         &lt;lgl&gt; NA, NA, NA, NA, NA,…
+## $ iso_3166_2_code                                    &lt;chr&gt; NA, NA, NA, NA, NA,…
+## $ census_fips_code                                   &lt;chr&gt; NA, NA, NA, NA, NA,…
+## $ place_id                                           &lt;chr&gt; &quot;ChIJzyjM68dZnAARYz…
+## $ date                                               &lt;date&gt; 2020-02-15, 2020-0…
+## $ retail_and_recreation_percent_change_from_baseline &lt;dbl&gt; 5, 2, -2, -3, -1, 1…
+## $ grocery_and_pharmacy_percent_change_from_baseline  &lt;dbl&gt; 4, 3, 0, -1, -2, 7,…
+## $ parks_percent_change_from_baseline                 &lt;dbl&gt; -5, -13, -12, -11, …
+## $ transit_stations_percent_change_from_baseline      &lt;dbl&gt; 8, 3, 9, 9, 8, 11, …
+## $ workplaces_percent_change_from_baseline            &lt;dbl&gt; 6, 0, 19, 15, 14, 1…
+## $ residential_percent_change_from_baseline           &lt;dbl&gt; 0, 1, -1, -1, -1, -…</code></pre>
+<p>We can see our dataset has about 3.19 million rows and 15 columns. The most relevant information are stored in the columns ending with <code>percent_change_from_baseline</code>. These are precisely the measures of mobility for categorized places. The other columns of interest are those containing <code>region</code> and, of course, the column <code>date</code>. I recommend you to set some time aside to explore the dataset. You will notice that the <code>sub_region_*</code> columns refer to sub-national breakdowns such as states and municipalities. They are both <code>NA</code> for the national level.</p>
+<p>Suppose our ultimate goal is to have a plot with the average mobility of the categories for each country in the national-level. We know in advance that it’s very likely that a strong seasonal pattern is present. For example, mobility in workplaces should be higher during weekdays and lower on weekends. The opposite should be true for parks. We will address the issue of seasonality later in Chapter #. For now, it’s enough to know that creating a 7-days rolling mean of the original time series does the trick.</p>
+<p>Finally, we need to invert the residential mobility since a higher (lower) residential mobility means a lower (higher) mobility elsewhere. So, if we are to aggregate all the mobility categories into one single measure (the average) they must point to the same direction.</p>
+<p>Hence, our task is to produce a data frame with only the relevant variables. This involves, for each country, the following sequence of actions:</p>
+<ol style="list-style-type: decimal">
+<li>Filter the national data.</li>
+<li>Invert the direction of the residential mobility (change the sign).</li>
+<li>Transform each mobility category column into a 7-days moving average.</li>
+<li>Create a column with the average mobility of categories.</li>
+<li>Remove the irrelevant variables.</li>
+</ol>
+<p>This should not be quite a challenge and we can accomplish it with a few lines of code using the right features from <code>dplyr</code> (1.0.0 or higher) package. I consider Items 3 and 4 the most important because we are tempted to offer a cumbersome solution that can be easily avoided with the proper tools. But before jumping to the best approach. let’s figure out how an old-fashioned approach might look like for Item 3. Using the <code>RcppRoll::roll_meanr</code> to compute 7-days rolling means, our first solution could be something like this:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="google.html#cb33-1" aria-hidden="true" tabindex="-1"></a>mutate_try1 <span class="ot">&lt;-</span> mobility_data <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="google.html#cb33-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="google.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(date) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-4"><a href="google.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb33-5"><a href="google.html#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">retail_and_recreation_percent_change_from_baseline =</span> RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(retail_and_recreation_percent_change_from_baseline, <span class="dv">7</span>),</span>
+<span id="cb33-6"><a href="google.html#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">grocery_and_pharmacy_percent_change_from_baseline =</span> RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(grocery_and_pharmacy_percent_change_from_baseline, <span class="dv">7</span>),</span>
+<span id="cb33-7"><a href="google.html#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">parks_percent_change_from_baseline =</span> RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(parks_percent_change_from_baseline, <span class="dv">7</span>),</span>
+<span id="cb33-8"><a href="google.html#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">transit_stations_percent_change_from_baseline =</span> RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(transit_stations_percent_change_from_baseline, <span class="dv">7</span>),</span>
+<span id="cb33-9"><a href="google.html#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">workplaces_percent_change_from_baseline =</span> RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(workplaces_percent_change_from_baseline, <span class="dv">7</span>),</span>
+<span id="cb33-10"><a href="google.html#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">residential_percent_change_from_baseline =</span> RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(residential_percent_change_from_baseline, <span class="dv">7</span>)</span>
+<span id="cb33-11"><a href="google.html#cb33-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>This solution is terrible, nevertheless I come across it very often. Fortunately, we already have a way to avoid it. The first step towards a better solution would be to use <code>dplyr::across</code> to replace the variable name in the right-hand side by <code>.x</code>. This will eliminate part of the redundancies.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="google.html#cb34-1" aria-hidden="true" tabindex="-1"></a>mutate_try2 <span class="ot">&lt;-</span> mobility_data <span class="sc">%&gt;%</span> </span>
+<span id="cb34-2"><a href="google.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-3"><a href="google.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(date) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-4"><a href="google.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb34-5"><a href="google.html#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(retail_and_recreation_percent_change_from_baseline, <span class="sc">~</span>RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, <span class="dv">7</span>)),</span>
+<span id="cb34-6"><a href="google.html#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(grocery_and_pharmacy_percent_change_from_baseline, <span class="sc">~</span>RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, <span class="dv">7</span>)),</span>
+<span id="cb34-7"><a href="google.html#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(parks_percent_change_from_baseline, <span class="sc">~</span>RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, <span class="dv">7</span>)),</span>
+<span id="cb34-8"><a href="google.html#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(transit_stations_percent_change_from_baseline, <span class="sc">~</span>RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, <span class="dv">7</span>)),</span>
+<span id="cb34-9"><a href="google.html#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(workplaces_percent_change_from_baseline, <span class="sc">~</span>RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, <span class="dv">7</span>)),</span>
+<span id="cb34-10"><a href="google.html#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(residential_percent_change_from_baseline, <span class="sc">~</span>RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, <span class="dv">7</span>))</span>
+<span id="cb34-11"><a href="google.html#cb34-11" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<p>Ok, we’ve made some progress in cutting part of the repetitions but we can certainly do better. Note that in this case the variables we are interested in show a clear pattern: they all end with <strong>percent_change_from_baseline</strong> or simply <strong>baseline</strong>. We can take advantage of this to further improve our solution using <strong>select helpers</strong>.</p>
+<p>These are expressions that can be used to refer to specific patterns or make generalizations. For instance, here we could use the select helper <code>ends_with</code> to create the 7-days rolling mean for all the variables ending with <strong>baseline</strong>.</p>
+<p>In addition, we can also use the argument <code>.names</code> to assign a <code>glue</code>-style name to the new variables: <code>{.col}</code> gets the column name and <code>{.fun}</code> gets the name of the function. This is great to identify which function we applied to each variable. Here, we can use a <strong>ma7d</strong> suffix which stands for <em>moving-average 7-days</em>.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="google.html#cb35-1" aria-hidden="true" tabindex="-1"></a>mutate_topsolution <span class="ot">&lt;-</span> mobility_data <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="google.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-3"><a href="google.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(date) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-4"><a href="google.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb35-5"><a href="google.html#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&#39;baseline&#39;</span>), <span class="sc">~</span>RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, <span class="dv">7</span>), <span class="at">.names =</span> <span class="st">&#39;{.col}_ma7d&#39;</span>)</span>
+<span id="cb35-6"><a href="google.html#cb35-6" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<p>The main lesson here is to avoid using variables names to compute the operations. Instead, whenever possible we must rely on the combination of <code>across</code> and <code>select helpers</code>. This avoids unnecessarily writing variables names so many times and therefore allows us to scale up the work.</p>
+<p>The same reasoning applies to Item 4. Can you see how? Remember that Item 4 asks us to create a column with the average mobility of categories. Well, all these columns we need to average end with <em>baseline</em>. So we don’t need to rewrite all the variables names to get a new column with the mean – we can resort to select helpers. The only difference is that now we need an operation over the rows rather than over the columns – we are averaging the values over the rows.</p>
+<p>We can accomplish it by using <code>dplyr::rowwise</code>. Roughly speaking, this function turns every row of the data frame into a single group. Then you can perform your calculation on that group (the row). In addition, we have to replace the <code>across</code> function by the <code>c_across</code> function. The <code>c_across</code> is simply the equivalent of <code>across</code> when we’re using <code>rowwise</code> mode. Remember to use <code>dplyr::ungroup</code> to turn row-wise off and get back to the default column-wise mode when you don’t need operations over rows anymore.</p>
+<p>Below the full solution for Items 1 to 5.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="google.html#cb36-1" aria-hidden="true" tabindex="-1"></a>mobility_prep <span class="ot">&lt;-</span> mobility_data <span class="sc">%&gt;%</span> </span>
+<span id="cb36-2"><a href="google.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">is.na</span>(sub_region_1)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="google.html#cb36-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&#39;residential&#39;</span>), <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>.x)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="google.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span></span>
+<span id="cb36-5"><a href="google.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(date) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-6"><a href="google.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&#39;baseline&#39;</span>), <span class="sc">~</span> RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, <span class="dv">7</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.names =</span> <span class="st">&#39;{.col}_ma7d&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-7"><a href="google.html#cb36-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb36-8"><a href="google.html#cb36-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb36-9"><a href="google.html#cb36-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">avg_mobility =</span> <span class="fu">mean</span>(<span class="fu">c_across</span>(<span class="fu">ends_with</span>(<span class="st">&#39;ma7d&#39;</span>)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-10"><a href="google.html#cb36-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb36-11"><a href="google.html#cb36-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(date, country_region, <span class="fu">ends_with</span>(<span class="st">&#39;baseline&#39;</span>), avg_mobility) </span></code></pre></div>
+</div>
+<div id="plot-information" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Plot information</h2>
+<p>We have mobility data for six countries and we should now decide how to plot them. Time series are usually better presented as lines, but there are some choices to be made. The most important one is whether we should display all the countries on a single or separate graph. It depends on the purpose of the plot. If we are interested in observing the differences among countries in the same time period, then a single graph is a natural choice. On the other hand, if our goal is to observe in more detail the evolution in each country, then a separate plot is more convenient.</p>
+<p>Let’s stick with the latter in this example. We can easily do this using <code>facet_wrap</code> which is a very cool feature from <code>ggplot</code>. In this case we’re segmenting our plot by country, but we’re not constrained to segment it by only one variable. Besides, we can use the argument <code>scales = 'free_y'</code> to make the scales of each graph more adjusted to the limits of the data. It’s not desirable here as we want to make visual comparisons between countries straightforward.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="google.html#cb37-1" aria-hidden="true" tabindex="-1"></a>mobility_prep <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="google.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> avg_mobility)) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="google.html#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb37-4"><a href="google.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> country_region) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="google.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;Average mobility in selected countries - % change from baseline&#39;</span>,</span>
+<span id="cb37-6"><a href="google.html#cb37-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&#39;7-days moving average&#39;</span>,</span>
+<span id="cb37-7"><a href="google.html#cb37-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&#39;Data source: Google&#39;</span>) <span class="sc">+</span></span>
+<span id="cb37-8"><a href="google.html#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb37-9"><a href="google.html#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code></pre></div>
+<p><img src="RBook_files/figure-html/ch1_chunk12-1.png" width="672" /></p>
+</div>
+<div id="from-code-to-function" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> From code to function</h2>
+<p>We have the complete code to import, prepare and visualize the data. Perhaps this analysis will become part of our routine or that of a stakeholder. And if that happens, it’s very likely that we’ll need to look at other countries. So a good practice in this case is to convert our code into a function.</p>
+<p>Creating a function is highly recommended whenever we have a repeated action on a different set of arguments. Here, we can think of two arguments that we would like to change eventually: country and the window size of the rolling mean. Therefore our task is to gather all the code we have produced so far and to transform these two inputs into arguments of the function.</p>
+<p>Note, however, that converting code into a function raises some issues. For example, when writing the code we used a vector to import data for the selected countries. It’s not the most efficient approach, because each file has a significant size and thus the execution may be very slow. This is a truly concern when we’re writing a function, because functions are most of the time used to loop over a large set of arguments – many countries, for example. Hence, we would like to process this task in parallel rather than serially.</p>
+<p>Surely we can perform this parallel processing inside the function, but I always prefer to keep things simpler and more transparent. This means to write a function to plot only a single country and, if necessary, we can use <code>purrr::map</code> to get as many countries as we want – and (explicitly) in parallel.</p>
+<p>Other minor yet important issue is that in a function we have to use the arguments as inputs everywhere, not only in obvious places. For example, when preparing the data we included a <code>ma7d</code> to the column names to indicate they were transformed into 7-days rolling mean. This label was also used in many actions later – when computing the average mobility, in the plot subtitle, etc. Therefore, we need to ensure that this argument will be considered in those actions as well. To achieve this, we’ll use <code>glue::glue()</code> function to create custom labels.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="google.html#cb38-1" aria-hidden="true" tabindex="-1"></a>plot_mobility <span class="ot">&lt;-</span> <span class="cf">function</span>(country_code, ma_window){</span>
+<span id="cb38-2"><a href="google.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(lubridate)</span>
+<span id="cb38-3"><a href="google.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse)  </span>
+<span id="cb38-4"><a href="google.html#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(glue)</span>
+<span id="cb38-5"><a href="google.html#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Import data</span></span>
+<span id="cb38-6"><a href="google.html#cb38-6" aria-hidden="true" tabindex="-1"></a>  countries_codes <span class="ot">&lt;-</span> country_code</span>
+<span id="cb38-7"><a href="google.html#cb38-7" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2020</span>,</span>
+<span id="cb38-8"><a href="google.html#cb38-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">to =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(<span class="fu">Sys.Date</span>()), </span>
+<span id="cb38-9"><a href="google.html#cb38-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb38-10"><a href="google.html#cb38-10" aria-hidden="true" tabindex="-1"></a>  google_filenames <span class="ot">&lt;-</span> </span>
+<span id="cb38-11"><a href="google.html#cb38-11" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">cross2</span>(years, countries_codes) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-12"><a href="google.html#cb38-12" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">map_chr</span>(<span class="at">.f =</span> <span class="cf">function</span>(x){</span>
+<span id="cb38-13"><a href="google.html#cb38-13" aria-hidden="true" tabindex="-1"></a>      x <span class="sc">%&gt;%</span> </span>
+<span id="cb38-14"><a href="google.html#cb38-14" aria-hidden="true" tabindex="-1"></a>        glue<span class="sc">::</span><span class="fu">glue_collapse</span>(<span class="at">sep =</span> <span class="st">&#39;_&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-15"><a href="google.html#cb38-15" aria-hidden="true" tabindex="-1"></a>        glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;_Region_Mobility_Report.csv&#39;</span>)</span>
+<span id="cb38-16"><a href="google.html#cb38-16" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb38-17"><a href="google.html#cb38-17" aria-hidden="true" tabindex="-1"></a>  mobility_data <span class="ot">&lt;-</span> </span>
+<span id="cb38-18"><a href="google.html#cb38-18" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">map_dfr</span>(</span>
+<span id="cb38-19"><a href="google.html#cb38-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">.x =</span> google_filenames, </span>
+<span id="cb38-20"><a href="google.html#cb38-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">.f =</span> <span class="cf">function</span>(x){</span>
+<span id="cb38-21"><a href="google.html#cb38-21" aria-hidden="true" tabindex="-1"></a>        readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="fu">unz</span>(<span class="st">&#39;data/Region_Mobility_Report_CSVs.zip&#39;</span>, x))</span>
+<span id="cb38-22"><a href="google.html#cb38-22" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb38-23"><a href="google.html#cb38-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Prepare data</span></span>
+<span id="cb38-24"><a href="google.html#cb38-24" aria-hidden="true" tabindex="-1"></a>  mobility_prep <span class="ot">&lt;-</span> mobility_data <span class="sc">%&gt;%</span> </span>
+<span id="cb38-25"><a href="google.html#cb38-25" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">is.na</span>(sub_region_1)) <span class="sc">%&gt;%</span></span>
+<span id="cb38-26"><a href="google.html#cb38-26" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&#39;residential&#39;</span>), <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>.x)) <span class="sc">%&gt;%</span></span>
+<span id="cb38-27"><a href="google.html#cb38-27" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span></span>
+<span id="cb38-28"><a href="google.html#cb38-28" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">arrange</span>(date) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-29"><a href="google.html#cb38-29" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&#39;baseline&#39;</span>), <span class="sc">~</span> RcppRoll<span class="sc">::</span><span class="fu">roll_meanr</span>(.x, ma_window, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.names =</span> <span class="st">&#39;{.col}_ma{ma_window}d&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb38-30"><a href="google.html#cb38-30" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb38-31"><a href="google.html#cb38-31" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb38-32"><a href="google.html#cb38-32" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">avg_mobility =</span> <span class="fu">mean</span>(<span class="fu">c_across</span>(<span class="fu">ends_with</span>(<span class="fu">glue</span>(<span class="st">&#39;ma{ma_window}d&#39;</span>))), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb38-33"><a href="google.html#cb38-33" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb38-34"><a href="google.html#cb38-34" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(date, country_region, <span class="fu">ends_with</span>(<span class="st">&#39;baseline&#39;</span>), avg_mobility) </span>
+<span id="cb38-35"><a href="google.html#cb38-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Output: plot</span></span>
+<span id="cb38-36"><a href="google.html#cb38-36" aria-hidden="true" tabindex="-1"></a>  mobility_prep <span class="sc">%&gt;%</span> </span>
+<span id="cb38-37"><a href="google.html#cb38-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> avg_mobility)) <span class="sc">+</span></span>
+<span id="cb38-38"><a href="google.html#cb38-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb38-39"><a href="google.html#cb38-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">glue</span>(<span class="st">&#39;Average mobility in {country_code} - % change from baseline&#39;</span>),</span>
+<span id="cb38-40"><a href="google.html#cb38-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="fu">glue</span>(<span class="st">&#39;{ma_window}-days moving average&#39;</span>),</span>
+<span id="cb38-41"><a href="google.html#cb38-41" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">&#39;Data source: Google&#39;</span>) <span class="sc">+</span></span>
+<span id="cb38-42"><a href="google.html#cb38-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb38-43"><a href="google.html#cb38-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_light</span>()</span>
+<span id="cb38-44"><a href="google.html#cb38-44" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We can now use the function <code>plot_mobility</code> to plot any country we want and with the desired window for the rolling mean.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="google.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_mobility</span>(<span class="st">&#39;BR&#39;</span>, <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="RBook_files/figure-html/ch01_chunk14-1.png" width="672" /></p>
+<p>Or we can use <code>purrr::map</code> and <code>gridExtra</code> to plot several countries.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="google.html#cb40-1" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;BR&#39;</span>, <span class="st">&#39;US&#39;</span>, <span class="st">&#39;FR&#39;</span>, <span class="st">&#39;DE&#39;</span>)</span>
+<span id="cb40-2"><a href="google.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="google.html#cb40-3" aria-hidden="true" tabindex="-1"></a>mobility_countries <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(<span class="at">.x =</span> countries, <span class="at">.f =</span> plot_mobility, <span class="dv">14</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-4"><a href="google.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  magrittr<span class="sc">::</span><span class="fu">set_names</span>(countries)</span>
+<span id="cb40-5"><a href="google.html#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="google.html#cb40-6" aria-hidden="true" tabindex="-1"></a>mobility_countries[[<span class="st">&#39;DE&#39;</span>]]</span></code></pre></div>
+<p><img src="RBook_files/figure-html/ch01_chun15-1.png" width="672" /></p>
+<p>To finish up, we must keep in mind that a function that return a plot is not very flexible and maybe we should consider the output to be the processed data instead of the plot. This would enable us to customize the plot and to perform other analysis as well.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tidyverse.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="owidCovid.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["RBook.pdf", "RBook.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

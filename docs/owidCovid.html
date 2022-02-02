@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Our World in Data COVID | Book’s title</title>
+  <meta name="description" content="Book on Data Science using R by J. Renato Leripio" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Our World in Data COVID | Book’s title" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Book on Data Science using R by J. Renato Leripio" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Our World in Data COVID | Book’s title" />
+  
+  <meta name="twitter:description" content="Book on Data Science using R by J. Renato Leripio" />
+  
+
+<meta name="author" content="J. Renato Leripio" />
+
+
+<meta name="date" content="2022-02-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="google.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Book on Data Science using R by J. Renato Leripio</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i><b>2</b> The basics of Tidyverse</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tidyverse.html"><a href="tidyverse.html#whats-tidyverse"><i class="fa fa-check"></i><b>2.1</b> What’s tidyverse?</a></li>
+<li class="chapter" data-level="2.2" data-path="tidyverse.html"><a href="tidyverse.html#import"><i class="fa fa-check"></i><b>2.2</b> Import</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="tidyverse.html"><a href="tidyverse.html#reading-from-files"><i class="fa fa-check"></i><b>2.2.1</b> Reading from files</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tidyverse.html"><a href="tidyverse.html#reading-from-api"><i class="fa fa-check"></i><b>2.2.2</b> Reading from API</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="tidyverse.html"><a href="tidyverse.html#wrangle"><i class="fa fa-check"></i><b>2.3</b> Wrangle</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="tidyverse.html"><a href="tidyverse.html#data-manipulation"><i class="fa fa-check"></i><b>2.3.1</b> Data manipulation</a></li>
+<li class="chapter" data-level="2.3.2" data-path="tidyverse.html"><a href="tidyverse.html#data-layout"><i class="fa fa-check"></i><b>2.3.2</b> Data layout</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="google.html"><a href="google.html"><i class="fa fa-check"></i><b>3</b> Google Mobility</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="google.html"><a href="google.html#importing-data"><i class="fa fa-check"></i><b>3.1</b> Importing data</a></li>
+<li class="chapter" data-level="3.2" data-path="google.html"><a href="google.html#preparing-the-data"><i class="fa fa-check"></i><b>3.2</b> Preparing the data</a></li>
+<li class="chapter" data-level="3.3" data-path="google.html"><a href="google.html#plot-information"><i class="fa fa-check"></i><b>3.3</b> Plot information</a></li>
+<li class="chapter" data-level="3.4" data-path="google.html"><a href="google.html#from-code-to-function"><i class="fa fa-check"></i><b>3.4</b> From code to function</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="owidCovid.html"><a href="owidCovid.html"><i class="fa fa-check"></i><b>4</b> Our World in Data COVID</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="owidCovid.html"><a href="owidCovid.html#importing-data-1"><i class="fa fa-check"></i><b>4.1</b> Importing data</a></li>
+<li class="chapter" data-level="4.2" data-path="owidCovid.html"><a href="owidCovid.html#preparing-the-data-1"><i class="fa fa-check"></i><b>4.2</b> Preparing the data</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Book’s title</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="owidCovid" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Our World in Data COVID</h1>
+<div id="importing-data-1" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Importing data</h2>
+<p>In this Chapter, we’ll turn to the COVID dataset from the Our World in Data project. It contains a complete set of variables related to COVID for a large number of countries. We can download it directly from the project’s Github:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="owidCovid.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb41-2"><a href="owidCovid.html#cb41-2" aria-hidden="true" tabindex="-1"></a>data_url <span class="ot">&lt;-</span> <span class="st">&#39;https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv&#39;</span></span>
+<span id="cb41-3"><a href="owidCovid.html#cb41-3" aria-hidden="true" tabindex="-1"></a>covid_data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(data_url)</span></code></pre></div>
+</div>
+<div id="preparing-the-data-1" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Preparing the data</h2>
+<p>Suppose we’re interested in producing a rank with the ten’s most and least fully vaccinated countries in the world. At this time, fully vaccinated can be thought of as an individual who got two doses – we won’t consider booster doses. So our first task is to select the appropriate data on vaccinations. Using <code>dplyr::glimpse()</code> to check the variables in this dataset, we see three variables are of interest: <strong>location, date and people_fully_vaccinated_per_hundred</strong>.</p>
+<p>Besides, it’s likely that several countries don’t have any data on vaccinations at all. This is the case of Vaticano, for example. We’d like to get rid of them, since they won’t make part of our ranking. What we need, then, is a condition which returns <code>TRUE</code> only if a given location has any non-NA value.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="owidCovid.html#cb42-1" aria-hidden="true" tabindex="-1"></a>vacc_data <span class="ot">&lt;-</span> covid_data <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="owidCovid.html#cb42-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(location, </span>
+<span id="cb42-3"><a href="owidCovid.html#cb42-3" aria-hidden="true" tabindex="-1"></a>                date, </span>
+<span id="cb42-4"><a href="owidCovid.html#cb42-4" aria-hidden="true" tabindex="-1"></a>                people_fully_vaccinated_per_hundred) <span class="sc">%&gt;%</span>   </span>
+<span id="cb42-5"><a href="owidCovid.html#cb42-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(location) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-6"><a href="owidCovid.html#cb42-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(people_fully_vaccinated_per_hundred))) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-7"><a href="owidCovid.html#cb42-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span></code></pre></div>
+<p>Since we only need the last figures for each country, we can filter the most recent observations.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="owidCovid.html#cb43-1" aria-hidden="true" tabindex="-1"></a>vacc_data_last <span class="ot">&lt;-</span> vacc_data <span class="sc">%&gt;%</span> </span>
+<span id="cb43-2"><a href="owidCovid.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(location) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-3"><a href="owidCovid.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">max</span>(date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-4"><a href="owidCovid.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span></code></pre></div>
+<p>There’s a problem here! For many countries the last day is filled with a <code>NA</code>, even though data is available for previous days. See, for example, the Netherlands. We know that 74.6% of its population was vaccinated with two doses by 2021-12-12. But there’s no data for the following seven days.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="owidCovid.html#cb44-1" aria-hidden="true" tabindex="-1"></a>vacc_data <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="owidCovid.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(location <span class="sc">==</span> <span class="st">&#39;Netherlands&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb44-3"><a href="owidCovid.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice_tail</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 3
+##    location    date       people_fully_vaccinated_per_hundred
+##    &lt;chr&gt;       &lt;date&gt;                                   &lt;dbl&gt;
+##  1 Netherlands 2021-12-11                                NA  
+##  2 Netherlands 2021-12-12                                74.6
+##  3 Netherlands 2021-12-13                                NA  
+##  4 Netherlands 2021-12-14                                NA  
+##  5 Netherlands 2021-12-15                                NA  
+##  6 Netherlands 2021-12-16                                NA  
+##  7 Netherlands 2021-12-17                                NA  
+##  8 Netherlands 2021-12-18                                NA  
+##  9 Netherlands 2021-12-19                                NA  
+## 10 Netherlands 2021-12-20                                NA</code></pre>
+<p>We could think of different ways to retain the most recent non-NA observation in each country. But since the percentage of people vaccinated cannot decrease, it’s entirely fair to carry this observation forward and consider it the most recent figure. How can we do it? The <code>fill()</code> function from the <code>tidyr</code> package is designed to fill missing values with the previous (default) or next non-NA value, the main argument being the columns we want to fill.</p>
+<p>At this point, I’d like to call your attention for another powerful tool available in <code>dplyr</code> 1.0.0 or higher. Remember that we used <code>across</code> to select variables using the pattern in their names? The selection helper <code>where</code> does something similar, but instead of a name pattern it selects the variables for which a given function returns <code>TRUE</code>. For example, we know that the variable we want to fill is numeric. So we can use this condition to prevent us from writing it. It won’t save us a lot of effort since we have only one variable with this condition here, but what if we had dozens?</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="owidCovid.html#cb46-1" aria-hidden="true" tabindex="-1"></a>vacc_data_last_nonNA <span class="ot">&lt;-</span> vacc_data <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="owidCovid.html#cb46-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(location) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-3"><a href="owidCovid.html#cb46-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(date) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-4"><a href="owidCovid.html#cb46-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">fill</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-5"><a href="owidCovid.html#cb46-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(date <span class="sc">==</span> <span class="fu">max</span>(date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-6"><a href="owidCovid.html#cb46-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span></code></pre></div>
+<p>We can check what happened to Netherlands’ data for the last seven days. The last value from Dec 12th has been successfully carried forward up to Dec 19th. Now we’re ready to create our ranking and then plot it to get e better sense of the inequality in the vaccination race between countries.</p>
+<p>Notice I use <code>n()</code> inside the <code>dplyr::slice()</code> function. It’s a great shortcut that can be used inside <code>dplyr</code> functions to avoid writing the number of rows in a data frame (or group). Also, note the use of <code>forcats::fct_reorder</code>. The <code>forcats</code> package contains a lot of useful functions to handle factors and <code>fct_reorder</code> is the one I use most. It reorder factor levels by sorting along another variable. In this case, as we are making a rank, it would be great if the locations were ordered by their position in the rank!</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="owidCovid.html#cb47-1" aria-hidden="true" tabindex="-1"></a>vacc_rank <span class="ot">&lt;-</span> vacc_data_last_nonNA <span class="sc">%&gt;%</span> </span>
+<span id="cb47-2"><a href="owidCovid.html#cb47-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rank =</span> dplyr<span class="sc">::</span><span class="fu">dense_rank</span>(<span class="fu">desc</span>(people_fully_vaccinated_per_hundred))) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-3"><a href="owidCovid.html#cb47-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(rank) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-4"><a href="owidCovid.html#cb47-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">n</span>()<span class="sc">:</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">9</span>)))</span>
+<span id="cb47-5"><a href="owidCovid.html#cb47-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-6"><a href="owidCovid.html#cb47-6" aria-hidden="true" tabindex="-1"></a>vacc_rank <span class="sc">%&gt;%</span></span>
+<span id="cb47-7"><a href="owidCovid.html#cb47-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rank_color =</span> <span class="fu">if_else</span>(rank <span class="sc">&lt;=</span> <span class="dv">10</span>, <span class="st">&#39;good&#39;</span>, <span class="st">&#39;bad&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-8"><a href="owidCovid.html#cb47-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(location, <span class="fu">desc</span>(rank)), </span>
+<span id="cb47-9"><a href="owidCovid.html#cb47-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> people_fully_vaccinated_per_hundred)) <span class="sc">+</span></span>
+<span id="cb47-10"><a href="owidCovid.html#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> rank_color)) <span class="sc">+</span></span>
+<span id="cb47-11"><a href="owidCovid.html#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&#39;red&#39;</span>, <span class="st">&#39;blue&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb47-12"><a href="owidCovid.html#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;{x}%&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb47-13"><a href="owidCovid.html#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;{people_fully_vaccinated_per_hundred}%&#39;</span>)), </span>
+<span id="cb47-14"><a href="owidCovid.html#cb47-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">nudge_y =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb47-15"><a href="owidCovid.html#cb47-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb47-16"><a href="owidCovid.html#cb47-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>) <span class="sc">+</span></span>
+<span id="cb47-17"><a href="owidCovid.html#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb47-18"><a href="owidCovid.html#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;Percentage of population fully vaccinated against COVID-19&#39;</span>,</span>
+<span id="cb47-19"><a href="owidCovid.html#cb47-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&#39;&#39;</span>, <span class="at">y =</span> <span class="st">&#39;&#39;</span>)</span></code></pre></div>
+<p><img src="RBook_files/figure-html/ch4_chunk5-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="google.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["RBook.pdf", "RBook.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

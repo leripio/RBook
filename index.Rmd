@@ -1,0 +1,16 @@
+--- 
+title: "Book's title"
+subtitle: "Book's subtitle"
+author: "J. Renato Leripio"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "Book on Data Science using R by J. Renato Leripio"
+---
+
+# Introduction {#intro}
+
+We will start this book by proposing some short yet very comprehensive exercises on the basics of data wrangling. However, this is by no means an easy or simple task. Since we spend a large portion of our time just cleaning and tidying up the datasets, doing the basics as readable and as efficient as possible is of great value.

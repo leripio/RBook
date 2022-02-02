@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Preparing data for regression | Book’s title</title>
+  <meta name="description" content="Book on Data Science using R by J. Renato Leripio" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Preparing data for regression | Book’s title" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Book on Data Science using R by J. Renato Leripio" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Preparing data for regression | Book’s title" />
+  
+  <meta name="twitter:description" content="Book on Data Science using R by J. Renato Leripio" />
+  
+
+<meta name="author" content="J. Renato Leripio" />
+
+
+<meta name="date" content="2022-02-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="regressionData.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Book on Data Science using R by J. Renato Leripio</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i><b>2</b> The basics of Tidyverse</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tidyverse.html"><a href="tidyverse.html#whats-tidyverse"><i class="fa fa-check"></i><b>2.1</b> What’s tidyverse?</a></li>
+<li class="chapter" data-level="2.2" data-path="tidyverse.html"><a href="tidyverse.html#import"><i class="fa fa-check"></i><b>2.2</b> Import</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="tidyverse.html"><a href="tidyverse.html#reading-from-files"><i class="fa fa-check"></i><b>2.2.1</b> Reading from files</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tidyverse.html"><a href="tidyverse.html#reading-from-api"><i class="fa fa-check"></i><b>2.2.2</b> Reading from API</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="tidyverse.html"><a href="tidyverse.html#wrangle"><i class="fa fa-check"></i><b>2.3</b> Wrangle</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="tidyverse.html"><a href="tidyverse.html#data-manipulation"><i class="fa fa-check"></i><b>2.3.1</b> Data manipulation</a></li>
+<li class="chapter" data-level="2.3.2" data-path="tidyverse.html"><a href="tidyverse.html#data-layout"><i class="fa fa-check"></i><b>2.3.2</b> Data layout</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="google.html"><a href="google.html"><i class="fa fa-check"></i><b>3</b> Google Mobility</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="google.html"><a href="google.html#importing-data"><i class="fa fa-check"></i><b>3.1</b> Importing data</a></li>
+<li class="chapter" data-level="3.2" data-path="google.html"><a href="google.html#preparing-the-data"><i class="fa fa-check"></i><b>3.2</b> Preparing the data</a></li>
+<li class="chapter" data-level="3.3" data-path="google.html"><a href="google.html#plot-information"><i class="fa fa-check"></i><b>3.3</b> Plot information</a></li>
+<li class="chapter" data-level="3.4" data-path="google.html"><a href="google.html#from-code-to-function"><i class="fa fa-check"></i><b>3.4</b> From code to function</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="owidCovid.html"><a href="owidCovid.html"><i class="fa fa-check"></i><b>4</b> Our World in Data COVID</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="owidCovid.html"><a href="owidCovid.html#importing-data-1"><i class="fa fa-check"></i><b>4.1</b> Importing data</a></li>
+<li class="chapter" data-level="4.2" data-path="owidCovid.html"><a href="owidCovid.html#preparing-the-data-1"><i class="fa fa-check"></i><b>4.2</b> Preparing the data</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="regressionData.html"><a href="regressionData.html"><i class="fa fa-check"></i><b>5</b> Data for Regression</a></li>
+<li class="chapter" data-level="6" data-path="preparing-data-for-regression.html"><a href="preparing-data-for-regression.html"><i class="fa fa-check"></i><b>6</b> Preparing data for regression</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="preparing-data-for-regression.html"><a href="preparing-data-for-regression.html#creating-seasonal-dummies"><i class="fa fa-check"></i><b>6.1</b> Creating seasonal <em>dummies</em></a></li>
+<li class="chapter" data-level="6.2" data-path="preparing-data-for-regression.html"><a href="preparing-data-for-regression.html#creating-laggedleading-variables"><i class="fa fa-check"></i><b>6.2</b> Creating lagged/leading variables</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Book’s title</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="preparing-data-for-regression" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Preparing data for regression</h1>
+<p>In the previous chapter we got several insights on how to perform general data science tasks in a more efficient and less redundant way. In this chapter we’ll continue this path, but with a clear focus on regression. When we’re preparing a dataset to run regressions, we usually need one or more of the three following operations:</p>
+<ol style="list-style-type: decimal">
+<li>Change de frequency of our data.</li>
+<li>Create <strong>dummies</strong> variables.</li>
+<li>Create several lagged/leading variables.</li>
+</ol>
+<p>We’ll never get rid of <code>dplyr</code>, but the focus here will be on <code>tidyr</code>. As you may know, <code>tidyr</code> is the tidyverse’s package for creating tidy data. It contains many useful functions, but most of the time we’re interested in those used to pivot a data frame, i.e, to convert a data frame between long and wide forms. However, we’ll see that with some creativity we can employ these functions to do much more.</p>
+<p>For this chapter there’s no need to use a real dataset because the cases here are more conceptual and can be easily extended to real problems. So, let’s generate an artificial dataset with three monthly time series – var1, var2 and var3 – spanning from Jan/2018 to Dec/2021.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="preparing-data-for-regression.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb48-2"><a href="preparing-data-for-regression.html#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="preparing-data-for-regression.html#cb48-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">date =</span> <span class="fu">seq</span>(<span class="at">from =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="st">&quot;2018-01-01&quot;</span>), </span>
+<span id="cb48-4"><a href="preparing-data-for-regression.html#cb48-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">to   =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="st">&quot;2021-12-01&quot;</span>), </span>
+<span id="cb48-5"><a href="preparing-data-for-regression.html#cb48-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">by   =</span> <span class="st">&quot;month&quot;</span>)</span>
+<span id="cb48-6"><a href="preparing-data-for-regression.html#cb48-6" aria-hidden="true" tabindex="-1"></a>             ) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-7"><a href="preparing-data-for-regression.html#cb48-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">var1 =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>()),</span>
+<span id="cb48-8"><a href="preparing-data-for-regression.html#cb48-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">var2 =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>()),</span>
+<span id="cb48-9"><a href="preparing-data-for-regression.html#cb48-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">var3 =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>()))</span>
+<span id="cb48-10"><a href="preparing-data-for-regression.html#cb48-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-11"><a href="preparing-data-for-regression.html#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(df, <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 4
+##   date         var1   var2   var3
+##   &lt;date&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 2021-08-01  2.17   0.548 -1.44 
+## 2 2021-09-01  1.21   0.239  0.702
+## 3 2021-10-01 -1.12  -0.628 -0.262
+## 4 2021-11-01 -0.403  1.36  -1.57 
+## 5 2021-12-01 -0.467 -0.600 -1.51</code></pre>
+<div id="creating-seasonal-dummies" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Creating seasonal <em>dummies</em></h2>
+<p>Now suppose that we need to include seasonal (monthly) dummies in our model. You may think that creating twenty variables manually won’t kill you and proceed as below:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="preparing-data-for-regression.html#cb50-1" aria-hidden="true" tabindex="-1"></a>df_dummies <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="preparing-data-for-regression.html#cb50-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">jan =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-3"><a href="preparing-data-for-regression.html#cb50-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">feb =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-4"><a href="preparing-data-for-regression.html#cb50-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">mar =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-5"><a href="preparing-data-for-regression.html#cb50-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">apr =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-6"><a href="preparing-data-for-regression.html#cb50-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">may =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-7"><a href="preparing-data-for-regression.html#cb50-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">jun =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-8"><a href="preparing-data-for-regression.html#cb50-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">jul =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-9"><a href="preparing-data-for-regression.html#cb50-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">aug =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-10"><a href="preparing-data-for-regression.html#cb50-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">sep =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">9</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-11"><a href="preparing-data-for-regression.html#cb50-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">oct =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">10</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-12"><a href="preparing-data-for-regression.html#cb50-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">nov =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">11</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb50-13"><a href="preparing-data-for-regression.html#cb50-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">dec =</span> <span class="fu">ifelse</span>(lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="dv">12</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
+<p>What if the frequency of the data were weekly or even daily instead of monthly. You’re in trouble now, aren’t you? We can make this task easier and more general using <code>tidyr</code>. All we have to do is to create two columns: one with the labels and the other with the default value of the dummy variable. Next, we simply convert the label column from long to wide form using the value column to fill it. This will create a separate column for each month with the default value for cells corresponding to the month and <code>NA</code> otherwise. To fill these <code>NA</code> with the alternative value, we use the argument <code>values_fill</code>.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="preparing-data-for-regression.html#cb51-1" aria-hidden="true" tabindex="-1"></a>df_dummies <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb51-2"><a href="preparing-data-for-regression.html#cb51-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">months =</span> lubridate<span class="sc">::</span><span class="fu">month</span>(date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb51-3"><a href="preparing-data-for-regression.html#cb51-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">dummy_value =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb51-4"><a href="preparing-data-for-regression.html#cb51-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> months, </span>
+<span id="cb51-5"><a href="preparing-data-for-regression.html#cb51-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_from =</span> dummy_value, </span>
+<span id="cb51-6"><a href="preparing-data-for-regression.html#cb51-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_fill =</span> <span class="fu">list</span>(<span class="at">dummy_value =</span> <span class="dv">0</span>))</span>
+<span id="cb51-7"><a href="preparing-data-for-regression.html#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-8"><a href="preparing-data-for-regression.html#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df_dummies, <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 16
+##   date          var1    var2   var3   jan   fev   mar   abr   mai   jun   jul
+##   &lt;date&gt;       &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 2018-01-01 -0.560   0.780   2.19      1     0     0     0     0     0     0
+## 2 2018-02-01 -0.230  -0.0834  1.53      0     1     0     0     0     0     0
+## 3 2018-03-01  1.56    0.253  -0.236     0     0     1     0     0     0     0
+## 4 2018-04-01  0.0705 -0.0285 -1.03      0     0     0     1     0     0     0
+## 5 2018-05-01  0.129  -0.0429 -0.710     0     0     0     0     1     0     0
+## # … with 5 more variables: ago &lt;dbl&gt;, set &lt;dbl&gt;, out &lt;dbl&gt;, nov &lt;dbl&gt;,
+## #   dez &lt;dbl&gt;</code></pre>
+<p>The core of this solution is to define the column with the labels. This is very easy for time periods since the <code>lubridate</code> package contains functions to retrieve days, months, quarters and years from dates. Notice that we can use this approach to create any kind of dummies (not only seasonal ones), but it’s only worth it if it has many categories.</p>
+</div>
+<div id="creating-laggedleading-variables" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Creating lagged/leading variables</h2>
+<p>Imagine that you have a data frame with dozens (maybe hundreds) of variables and you need to create lagged (leading) versions of them to put into your model. It’s simply not feasible to do this writing the variable name one-by-one like in the following example:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="preparing-data-for-regression.html#cb53-1" aria-hidden="true" tabindex="-1"></a>df_reg <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb53-2"><a href="preparing-data-for-regression.html#cb53-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">var1_lag1 =</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(v))</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="regressionData.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["RBook.pdf", "RBook.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
