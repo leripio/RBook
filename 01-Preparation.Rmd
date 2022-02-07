@@ -242,9 +242,9 @@ covid_wide_01
 
 ```
 
-Notice that now we have 239 columns rather than 67 of the original data set with each cell conveying the whole information: new cases for a given date for a specific country. So, what if we wanted to have both `new_cases` and `new_deaths` columns in wide form? We just need to provide a vector with the desired variables in `values_from`. By default, the new columns are named according to the following pattern: **variable_location**.
+Notice that now we have 239 columns rather than 67 of the original data set with each cell conveying the whole information: new cases for a given date for a specific country. So, what if we wanted to have both `new_cases` and `new_deaths` columns in wide form? We just need to provide a vector with the desired variables in `values_from`. By default, the new columns will be named according to the following pattern: **variable_location**.
 
-Since the variables names already contain an underscore, it's a good idea to set the names separator to another character. This is because many functions have a "names separator" argument, thus it's much easier to use it if we have a unique separator character. Otherwise, we'd have to use regular expression to inform the specific position of the character -- for example, whether it's the first or the second underscore. 
+Since the variables names already contain an underscore, it's a good idea to set a different character as separator. This is because we might need to reverse the operation later for a given task, then it's much easier to identify it. Otherwise, we'd have to use regular expression to inform the specific position of the repeated character -- for example, whether it's the first or the second underscore. 
 
 ```{r ch00_chunk11}
 
@@ -292,7 +292,7 @@ covid_loc_cont
 
 ```
 
-This is undesirable since we can no longer use `group by` or `filter` over continents alone, for instance. Hence, the best practice is to have a single column for each variable. This can be easily achieved using the `separate` function, with a highly self-explanatory syntax. 
+This is undesirable since we can no longer use `group by` or `filter` over continents alone, for instance. Hence, the best practice is to have a single column for each variable. This can be easily achieved using the `separate` function, with a highly self-explanatory syntax. Again, the separator character being unique in the string makes the job much easier.
 
 ```{r ch00_chunck14}
 
@@ -324,11 +324,11 @@ How could we manage to separate them? Ideally, we should provide a regular expre
 
 At first glance, a natural choice would be to split the string as of the second uppercase letter. This would work for Afghanistan, France, Netherlands, Chile and all single-worded countries. However, this would fail for countries with two or more words: United States, New Zealand and many others. 
 
-Then, you could argue, a more general approach is to use regex to match the last uppercase letter in the string. Not actually, because we have a couple of two-worded continents: North America and South America. So, for example, **CanadaNorth America** would be split into **CanadaNorth** and **America** instead of **Canada** and **North America**.  
+Then, you could argue, a more general approach would be to use regex to match the last uppercase letter in the string. Not actually, because we have a couple of two-worded continents: North America and South America. So, for example, **CanadaNorth America** would be split into **CanadaNorth** and **America** instead of **Canada** and **North America**.  
 
-More often than not, the direct solution is the most difficult to implement (or we simply don't know how to accomplish it) and so we have to think about alternative ways. Data science is all about this. Since a regex solution alone might be very tough or even unfeasible, we'll get back to this problem later when covering the `stringr` package.      
+More often than not, the direct solution is the most difficult to implement (or we simply don't know how to accomplish it) and so we have to think about alternative ways. Data science is all about this. Since a regex solution alone might be very tough or even unfeasible, we'll get back to this problem later when covering text manipulation with the `stringr` package.      
 
-For now, let's just finish the `tidyr` package looking at two more very commonly used functions. The first one is `unite`, which is the counterpart of `separate`. We can use it to convert the `covid_separate` data frame back to the original form as in `covid_loc_cont`.
+For now, let's just get done with the `tidyr` package looking at two more very commonly used functions. The first one is `unite`, which is the counterpart of `separate`. We can use it to convert the `covid_separate` data frame back to the original form as in `covid_loc_cont`.
 
 ```{r ch00_chunk16}
 
@@ -353,7 +353,222 @@ covid_eu_nest
 
 ```
 
-I find it most useful when we need to perform several tasks over whole datasets. For example, if we had to transform the raw data, create graphics and fit models for each country in the covid dataset. The base R solution in this case would be to create list of lists, which can be very confusing sometimes. We'll come back to nested data frames when talking about functional programming with `purrr` package.   
+I find it most useful when we need to perform several tasks over whole datasets. For example, if we had to transform the raw data, create graphics and fit models for each country in the covid dataset. The base R solution in this case would be to create list of lists, which can be very confusing sometimes. We'll come back to nested data frames when we talk about functional programming with the `purrr` package.
+
+### Text manipulation
+
+The need to handle text data has grown substantially in parallel with the popularity of Machine Learning models and, more specifically, Natural Language Processing (NLP). For those more advanced applications, the challenge is to standardize a large set of (messy) texts in order to extract features which can then feed the models and generate predictions. 
+
+Nevertheless, knowing the basics of text manipulation is critical for everyday tasks. It includes subsetting parts of a word, detecting if specific patterns are present, replacing a sequence of characters by something else and so forth. The functions from the `stringr` package do a terrific job in simplifying all these operations and go far beyond. 
+
+Similarly to what we did in the previous sections, we'll focus on the most widely used functions. Let's start with `str_detect`, which is conveniently used in conjunction with `dplyr::filter` since it returns `TRUE` if the specific pattern is found in the string or `FALSE` otherwise.
+
+For example, let's say we want to analyze the covid data only for North and South Americas. We've learned how to do so using `dplyr::filter`.
+
+```{r ch00_chunk18}
+
+covid_americas <- covid_data %>% 
+  dplyr::filter(continent %in% c('North America', 'South America')) 
+```
+
+This one is not cumbersome. But let's pretend there are, say, 50 continents on Earth with 25 having 'America' in their names. Would it still make sense to write all these 25 names in a vector? Clearly not. Since all of them share a commom pattern, we can easily employ `str_detect` to do the trick:
+
+```{r ch00_chunk19}
+
+covid_americas2 <- covid_data %>% 
+  dplyr::filter(stringr::str_detect(continent, 'America'))
+
+```
+
+Note that we could have left aside several characters using only, say, 'Am' or 'Ame'. It would work fine if there is no other continent with this sequence of characters. Of course, this parsimony makes more sense for lengthy words or long sentences. For short words it's recommended to write the full word in order to prevent any undesirable output. 
+
+In addition, we can also provide multiple patterns to `str_detect` by separating them with a `|`. 
+
+```{r ch00_chunk20}
+
+covid_americas3 <- covid_data %>% 
+  dplyr::filter(stringr::str_detect(continent, 'South|North'))
+
+```
+
+Finally, we may use the `negate = TRUE` argument if we're interested in the opposite of the pattern we provide -- pretty much like `!` in conditions. It's specially useful when we want to keep most categories but one (or a few). For example, suppose that now we want to analyze every continent except for Asia. Instead of writing them all, we could simply do the following:
+
+```{r ch00_chunk21}
+
+covid_exAsia <- covid_data %>% 
+  dplyr::filter(stringr::str_detect(continent, 'Asia', negate = TRUE))
+
+```
+
+Another recurrent task when we're dealing with strings is to remove a part of it. It's generally required in order to establish a a standard within categories so we can perform further operations. The complexity of this task varies depending on the form of this undesired part. 
+
+The most simple case is when we have to remove a sequence of characters which is fixed both in length and in position. For example, suppose we have a data frame `covid_numCont` in which the observations in the continent column starts with a random number from 0 to 9 -- think of it as a typing error from the source, since the same reasoning applies if those random numbers were present only in a few observations.
+
+```{r ch00_chunk22, echo = F}
+
+set.seed(123)
+
+covid_numCont <- covid_data %>% 
+  dplyr::filter(!is.na(continent)) %>% 
+  dplyr::mutate(continent = sapply(continent, function(x) paste(sample(1:9, 1), x, sep = '.'))) %>% 
+  dplyr::select(2:4, 6)
+
+
+covid_numCont %>% 
+  dplyr::slice_sample(n =  10)
+
+```
+
+To solve this is solely a matter of subsetting the string from position 3 onwards using `str_sub`. The `end` argument defaults to last character, so we don't need to explicit it. 
+
+```{r ch00_chunk23}
+
+covid_numCont %>% 
+  dplyr::mutate(continent = stringr::str_sub(continent, start = 3))
+
+```
+
+Nice. But what if the random numbers ranged from 0 to 10? With an extra digit, we could no longer resort to the previous solution. 
+
+```{r ch00_chunk24, echo = F}
+
+set.seed(123)
+
+covid_numCont <- covid_data %>% 
+  dplyr::filter(!is.na(continent)) %>% 
+  dplyr::mutate(continent = sapply(continent, function(x) paste(sample(1:10, 1, prob = c(rep(0.3, 9), 0.6)), x, sep = '.'))) %>% 
+  dplyr::select(2:4, 6)
+
+
+covid_numCont %>% 
+  dplyr::slice_sample(n =  10)
+
+```
+
+We won't dedicate an exclusive section to regular expressions, but simple examples will eventually show up throughout the book. In this case, we could use a simple regular expression inside `str_remove` to get rid of everything before and up to the `.` -- `.*\\.`. 
+
+```{r ch00_chunk25}
+
+covid_numCont %>% 
+  dplyr::mutate(continent = stringr::str_remove(continent, ".*\\."))
+
+```
+
+Typing errors may arise under different forms along the character column. These cases usually require a more thorough evaluation and, more often than not, the solution is to manually replace the wrong words by the correct ones.
+
+For instance, in the data frame below (named `covid_typo`) we can find two different typos for North America: there's a missing **h** in positions 1 and 5; while there's an extra **h** in positions 3 and 8. Since the data frame contains a huge number of observations, it may occur in other positions as well. We can use `str_replace` to fix it for the whole column. 
+
+```{r ch00_chunk26, echo = F}
+
+set.seed(123)
+
+covid_typo <- covid_data %>% 
+  dplyr::filter(continent == 'North America') %>% 
+  dplyr::select(2:4, 6)
+
+covid_typo[c(1,5), ]$continent <- 'Nort America'
+covid_typo[c(3,8), ]$continent <- 'Northh America'
+
+covid_typo
+
+```
+
+```{r ch00_chunk27, echo = F}
+
+set.seed(123)
+
+covid_typo <- covid_data %>% 
+  dplyr::filter(continent == 'North America') %>% 
+  dplyr::select(2:4, 6)
+
+covid_typo[c(1,5), ]$continent <- 'Nort America'
+covid_typo[c(3,8), ]$continent <- 'Northh America'
+
+covid_typo %>% 
+  dplyr::mutate(
+    continent = stringr::str_replace(continent, 'Nort America', 'North America'),
+    continent = stringr::str_replace(continent, 'Northh America', 'North America')
+    )
+
+```
+
+```{r ch00_chunk28, eval = FALSE}
+
+covid_typo %>% 
+  dplyr::mutate(
+    continent = stringr::str_replace(continent, 'Nort America', 'North America'),
+    continent = stringr::str_replace(continent, 'Northh America', 'North America')
+    )
+
+```
+
+Or we can simply pass a vector with all the replacements to the `str_replace_all` function.
+
+```{r ch00_chunk29}
+
+covid_typo %>% 
+  dplyr::mutate(
+    continent = stringr::str_replace_all(continent, c('Nort America'   = 'North America',
+                                                      'Northh America' = 'North America')
+                                         )
+    )
+
+```
+
+There's one last kind of typo we can't help but to mention: whitespace. Whitespaces are particularly troublesome when they're misplaced in the start/end of string or repeated inside it. Because they're very easy to miss the `stringr` package contains two functions to cope with them: `str_trim` and `str_squish`. The former removes whitespaces from start/end of string, whereas the later removes them inside a string. 
+
+The data frame below (named `covid_ws`) uses the same example as above, but now with a whitespace in the end of observations 1 and 5; and a repeated whitespace inside the observations 3 and 8. 
+
+```{r ch00_chunk30, echo = F}
+
+set.seed(123)
+
+covid_ws <- covid_data %>% 
+  dplyr::filter(continent == 'North America') %>% 
+  dplyr::select(2:4, 6)
+
+covid_ws[c(1,5), ]$continent <- 'North America '
+covid_ws[c(3,8), ]$continent <- 'North  America'
+
+covid_ws
+
+```
+
+We can easily get rid of them using those functions. It's advisable to use them as a preprocessing step whenever we're working with character columns that should not have these extra whitespaces.
+
+```{r ch00_chunk32, eval = FALSE}
+
+covid_ws %>% 
+  dplyr::mutate(
+    continent = stringr::str_trim(continent),
+    continent = stringr::str_squish(continent)
+  )
+
+```
+
+```{r ch00_chunk31, echo = F}
+
+set.seed(123)
+
+covid_ws <- covid_data %>% 
+  dplyr::filter(continent == 'North America') %>% 
+  dplyr::select(2:4, 6)
+
+covid_ws[c(1,5), ]$continent <- 'North America ' 
+covid_ws[c(3,8), ]$continent <- 'North  America'
+
+covid_ws %>% 
+  dplyr::mutate(
+    continent = stringr::str_trim(continent),
+    continent = stringr::str_squish(continent)
+  )
+
+```
+
+To finish up, let's use the tools we've just learned to solve that problem in Section X. 
+
+
+### Date manipulation
 
 
 Falar stringr, purrr, ggpplot.
