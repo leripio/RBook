@@ -2,6 +2,7 @@
 
 ```{r setup0, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+Sys.setlocale("LC_TIME", "en_US.utf-8")
 ```
 
 The purpose of this chapter is to introduce the main functions of the core packages in tidyverse. It's not intended to be a thorough description of every function, rather the idea is to provide the basic tools so that those who are either base R users or aren't R users at all can follow along with the rest of the book. For a more detailed approach to tidyverse, the best source is [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham & Garrett Grolemund. For those who feel comfortable with tidyverse, a quick skim through the chapter might be enough.
@@ -186,7 +187,8 @@ covid_data_04 <- covid_data %>%
                 !is.na(new_cases)) %>% 
   dplyr::group_by(location) %>% 
   dplyr::summarise(max_new_cases = max(new_cases)) %>% 
-  dplyr::ungroup()
+  dplyr::ungroup() %>% 
+  dplyr::arrange(desc(max_new_cases))
    
 covid_data_04     
 
@@ -203,27 +205,24 @@ covid_data_05 <- covid_data %>%
                 !is.na(new_cases)) %>% 
   dplyr::group_by(location) %>% 
   dplyr::summarise(max_new_cases = max(new_cases),
-                   peak_date = date[which(new_cases == max_new_cases)],
-                   peak_date = max(peak_date)) %>% 
+                   peak_date = date[which(new_cases == max_new_cases)] %>% max()) %>% 
   dplyr::ungroup() %>% 
   dplyr::arrange(peak_date) %>% 
   dplyr::slice(1:10)
    
 covid_data_05   
 
-# Verificar depois por que Vaticano aparece com 2 entradas
-
 ```
 
-In case it went unnoticed, the previous code showed a really nice feature of `mutate`/`summarise`: you can use a variable you've just created in a subsequent task inside the same calling. In this example, we used the maximum number of new cases (first variable created) as a reference to obtain the dates when it occurred (second variable created) and them picked only the maximum date from a possibly set of dates (third variable created), all of this inside the same `summarise` calling as if all steps were performed sequentially. 
+In case it went unnoticed, the previous code showed a really nice feature of `mutate`/`summarise`: you can use a variable you've just created in a subsequent task inside the same calling. In this example, we used the maximum number of new cases (first variable created) as a reference to obtain the dates when it occurred (second variable created), all of this inside the same `summarise` calling as if all steps were performed sequentially. 
 
 Finally, we used `arrange` to sort countries by their peak date (this time by ascending order, the default) and then `slice` to subset only the first ten countries out of the forty-nine in our data set.
 
 **Falar dos joins, bind-rows/cols**
 
-### Data layout
+### Data layout {#datalay}
 
-We've walked through all the main functions of `dplyr`. Now, we turn to the `tidyr` package. According to tidyverse's website, the goal of `tidyr` is to help us create **tidy data**. It means a data set where every column is a variable; every row is an observation; and each cell is a single value. This is more like a convention created by tidyverse so that *"you’ll spend less time fighting with the tools and more time working on your analysis"*.
+We've walked through the main functions of `dplyr`. Now, we turn to the `tidyr` package. According to tidyverse's website, the goal of `tidyr` is to help us create **tidy data**. It means a data set where every column is a variable; every row is an observation; and each cell is a single value. This is more like a convention created by tidyverse so that *"you’ll spend less time fighting with the tools and more time working on your analysis"*.
 
 Tidy data is also known as **wide** format -- since it increases the number of columns and decreases the number of rows --, as opposed to the **long** format, where data are stacked increasing the number of rows and decreasing the number of columns. It took me a while before I could tell if a data set was in wide or long format, so don't worry if it's not so clear right now. Perhaps a more direct way of thinking about this distinction is to ask yourself: *Is all the information contained in a single cell?*. If yes, it's wide format. If not, it's long format. 
 
@@ -242,7 +241,7 @@ covid_wide_01
 
 ```
 
-Notice that now we have 239 columns rather than 67 of the original data set with each cell conveying the whole information: new cases for a given date for a specific country. So, what if we wanted to have both `new_cases` and `new_deaths` columns in wide form? We just need to provide a vector with the desired variables in `values_from`. By default, the new columns will be named according to the following pattern: **variable_location**.
+Notice that now we have 239 columns rather than 67 of the original data set with each cell conveying the whole information: new cases in a given date for a specific country. So, what if we wanted to have both `new_cases` and `new_deaths` columns in wide form? We just need to provide a vector with the desired variables in `values_from`. By default, the new columns will be named according to the following pattern: **variable_location**.
 
 Since the variables names already contain an underscore, it's a good idea to set a different character as separator. This is because we might need to reverse the operation later for a given task, then it's much easier to identify it. Otherwise, we'd have to use regular expression to inform the specific position of the repeated character -- for example, whether it's the first or the second underscore. 
 
@@ -258,7 +257,7 @@ covid_wide_02
 
 ```
 
-Our new data set expanded to 477 columns. As we create more and more columns to arrange more variables it becomes harder to perform some simple tasks. For example, it's much easier to use `group_by` with `mutate` or `summarise` when we have the data set in long format. In addition, using `filter` is generally easier than using a conditional `select` when we want to keep only the relevant data. 
+Our new data set expanded to 477 columns. As we create more and more columns to get a wide data set it becomes harder to perform some simple tasks. For example, it's much easier to use `group_by` with `mutate` or `summarise` when we have the data set in long format. In addition, using `filter` is generally easier than using a conditional `select` when we want to keep only the relevant data. 
 
 In summary, long format may be preferable over wide format when the data set contains more than one grouping variable or we want to work on more than one variable. Besides, long format data sets are ideal for plotting with `ggplot2` package as we'll see later. Therefore, it's not unusual to convert a data set from wide to long format. 
 
@@ -324,7 +323,7 @@ How could we manage to separate them? Ideally, we should provide a regular expre
 
 At first glance, a natural choice would be to split the string as of the second uppercase letter. This would work for Afghanistan, France, Netherlands, Chile and all single-worded countries. However, this would fail for countries with two or more words: United States, New Zealand and many others. 
 
-Then, you could argue, a more general approach would be to use regex to match the last uppercase letter in the string. Not actually, because we have a couple of two-worded continents: North America and South America. So, for example, **CanadaNorth America** would be split into **CanadaNorth** and **America** instead of **Canada** and **North America**.  
+Then, you could argue that a more general approach would be to use regex to match the last uppercase letter in the string. Not actually, because we have a couple of two-worded continents: North America and South America. So, for example, **CanadaNorth America** would be split into **CanadaNorth** and **America** instead of **Canada** and **North America**.  
 
 More often than not, the direct solution is the most difficult to implement (or we simply don't know how to accomplish it) and so we have to think about alternative ways. Data science is all about this. Since a regex solution alone might be very tough or even unfeasible, we'll get back to this problem later when covering text manipulation with the `stringr` package.      
 
@@ -400,7 +399,7 @@ covid_exAsia <- covid_data %>%
 
 ```
 
-Another recurrent task when we're dealing with strings is to remove a part of it. It's generally required in order to establish a a standard within categories so we can perform further operations. The complexity of this task varies depending on the form of this undesired part. 
+Another recurrent task when we're dealing with strings is to remove a part of it. It's generally required in order to establish a standard within categories so we can perform further operations. The complexity of this task varies depending on the form of this undesired part. 
 
 The most simple case is when we have to remove a sequence of characters which is fixed both in length and in position. For example, suppose we have a data frame `covid_numCont` in which the observations in the continent column starts with a random number from 0 to 9 -- think of it as a typing error from the source, since the same reasoning applies if those random numbers were present only in a few observations.
 
@@ -428,7 +427,7 @@ covid_numCont %>%
 
 ```
 
-Nice. But what if the random numbers ranged from 0 to 10? With an extra digit, we could no longer resort to the previous solution. 
+Nice. But what if the random numbers ranged from 0 to 10? 
 
 ```{r ch00_chunk24, echo = F}
 
@@ -445,7 +444,7 @@ covid_numCont %>%
 
 ```
 
-We won't dedicate an exclusive section to regular expressions, but simple examples will eventually show up throughout the book. In this case, we could use a simple regular expression inside `str_remove` to get rid of everything before and up to the `.` -- `.*\\.`. 
+With an extra digit, we could no longer resort to the previous solution. We won't dedicate an exclusive section to regular expressions, but simple examples will eventually show up throughout the book. In this case, we could use a simple regular expression inside `str_remove` to get rid of everything before and up to the `.` -- `.*\\.`. 
 
 ```{r ch00_chunk25}
 
@@ -454,9 +453,7 @@ covid_numCont %>%
 
 ```
 
-Typing errors may arise under different forms along the character column. These cases usually require a more thorough evaluation and, more often than not, the solution is to manually replace the wrong words by the correct ones.
-
-For instance, in the data frame below (named `covid_typo`) we can find two different typos for North America: there's a missing **h** in positions 1 and 5; while there's an extra **h** in positions 3 and 8. Since the data frame contains a huge number of observations, it may occur in other positions as well. We can use `str_replace` to fix it for the whole column. 
+Typing errors may arise under different forms along the character column. These cases usually require a more thorough evaluation and, more often than not, the solution is to manually replace the wrong words by the correct ones. For instance, in the data frame below (named `covid_typo`) we can find two different typos for North America: there's a missing **h** in rows 1 and 5; while there's an extra **h** in rows 3 and 8. 
 
 ```{r ch00_chunk26, echo = F}
 
@@ -473,24 +470,7 @@ covid_typo
 
 ```
 
-```{r ch00_chunk27, echo = F}
-
-set.seed(123)
-
-covid_typo <- covid_data %>% 
-  dplyr::filter(continent == 'North America') %>% 
-  dplyr::select(2:4, 6)
-
-covid_typo[c(1,5), ]$continent <- 'Nort America'
-covid_typo[c(3,8), ]$continent <- 'Northh America'
-
-covid_typo %>% 
-  dplyr::mutate(
-    continent = stringr::str_replace(continent, 'Nort America', 'North America'),
-    continent = stringr::str_replace(continent, 'Northh America', 'North America')
-    )
-
-```
+Since the data frame contains a huge number of observations, it may occur in other positions as well. We can use `str_replace` to fix it for the whole column. 
 
 ```{r ch00_chunk28, eval = FALSE}
 
@@ -508,14 +488,16 @@ Or we can simply pass a vector with all the replacements to the `str_replace_all
 
 covid_typo %>% 
   dplyr::mutate(
-    continent = stringr::str_replace_all(continent, c('Nort America'   = 'North America',
-                                                      'Northh America' = 'North America')
-                                         )
+    continent = stringr::str_replace_all(
+      continent, 
+      c('Nort America'   = 'North America',
+        'Northh America' = 'North America')
     )
+  )
 
 ```
 
-There's one last kind of typo we can't help but to mention: whitespace. Whitespaces are particularly troublesome when they're misplaced in the start/end of string or repeated inside it. Because they're very easy to miss the `stringr` package contains two functions to cope with them: `str_trim` and `str_squish`. The former removes whitespaces from start/end of string, whereas the later removes them inside a string. 
+There's one last kind of typo we can't help but to mention: whitespace. Whitespaces are particularly troublesome when they're misplaced in the start/end of string or repeated inside it. Because they're very easy to go unnoticed the `stringr` package contains two functions to cope with them: `str_trim` and `str_squish`. The former removes whitespaces from start/end of string, whereas the later removes them inside a string. 
 
 The data frame below (named `covid_ws`) uses the same example as above, but now with a whitespace in the end of observations 1 and 5; and a repeated whitespace inside the observations 3 and 8. 
 
@@ -565,12 +547,120 @@ covid_ws %>%
 
 ```
 
-To finish up, let's use the tools we've just learned to solve that problem in Section X. 
+To finish up, let's use the tools we've just learned to solve that problem in subsection \@ref(datalay). To recap, we wanted to separate the column `location` into country and continent. The issue was that with no separator character between the two names, we should resort to any kind of complicated regular expression to do the trick. 
 
+```{r, ref.label=I('ch00_chunck15'), echo = F}
+
+```
+
+As I said earlier, data science is all about finding workarounds. Of course we're often interested in general approaches, but sometimes we have to settle for a lower level solution which gets the job done. For example, in this case we could waste a long time figuring out the best possible solution whereas a simpler one is at hand. 
+
+Remember that we can use `stringr::replace_all` to replace a set of patterns in a string. In addition, we could easily employ `tidyr::separate` if we had a unique separator character. Therefore, all we have to do is to add a separator character right before continent names. Since we have only six continents it won't be cumbersome. We'll call this tibble `covid_loc_cont2`:
+
+```{r, ch00_chunk33}
+
+covid_loc_cont2 %>% 
+  dplyr::mutate(location = stringr::str_replace_all(
+    location,
+    c('Asia'          = '_Asia',
+      'Europe'        = '_Europe',
+      'Africa'        = '_Africa',
+      'South America' = '_South America',
+      'North America' = '_North America',
+      'Oceania'       = '_Oceania'))) %>% 
+  tidyr::separate(location, 
+                  c('country', 'continent'),
+                  '_')
+
+```
 
 ### Date manipulation
 
+Mastering date manipulation is crucial to perform a lot of tasks when we're dealing with time series data. The subject is so vast that tidyverse has developed the `lubridate` package exclusively to handle date objects. In this subsection, we'll focus on daily dates since we can explore a wide range of frequencies. 
 
-Falar stringr, purrr, ggpplot.
+The first step when we're working with dates is to convert the string to a date object using the `lubridate::as_date` function. This is very straighforward if the date column contains `year`, `month` and `day` sorted this way, regardless of how these terms are separated. For example, it might be like `2022-12-01`, `2022/12/01` or simply `20221201`.
+
+Sometimes, however, dates can take other forms. For instance, in Brazil it's very common to write dates in the `DD/MM/YYYY` format. In this case, we must declare the unusual format using specific operators: `%Y` for year; `%m` for month; and `%d` for day. There are other two useful ones: `%b` for abbreviated months (Mar, Apr, Nov, etc) and `%y` for two digits year. 
+
+Take the following data set (named `brl_usd`) which provides daily values of the Brazilian Real (BRL) versus the US Dollar where the column `date` is in the `DD/MM/YYYY` format. 
+
+```{r, ch00_chunk34, echo = FALSE}
+
+brl_usd <- rbcb::get_series(list('brl' = 1), start_date = '2010-01-04', end_date = '2021-12-31') %>% 
+  dplyr::mutate(date = glue::glue('{lubridate::day(date)}/{lubridate::month(date)}/{lubridate::year(date)}') %>% as.character())
+
+brl_usd
+
+```
+
+We'll first convert it to the appropriate format using the operators we've just learned. Note that `lubridate` will recognize the date elements and automatically return the standard format.  
+
+```{r, ch00_chunk35}
+
+brl_usd_aux <- brl_usd %>% 
+  dplyr::mutate(date = lubridate::as_date(date, format = '%d/%m/%Y'))
+
+brl_usd_aux
+
+```
+
+Date objects allow us to extract features that can be used for many purposes, most notably for temporal aggregation. Suppose we want to obtain BRL monthly average. All we have to do is to create the columns we need to perform a grouping operation: year and month. 
+
+```{r, ch00_chunk36}
+
+brl_usd_monthly <- brl_usd_aux %>% 
+  dplyr::mutate(year  = lubridate::year(date),
+                month = lubridate::month(date)) %>% 
+  dplyr::group_by(year, month) %>% 
+  dplyr::summarise(brl_monthly = mean(brl))
+
+brl_usd_monthly
+
+```
+
+The same procedure applies if we'd like to get quarterly means. It's just a matter of creating a column with quarter. Be aware, however, that the `quarter` function has a parameter named `with_year` that when is set to `TRUE` eliminates the need to create a separate column for the year. 
+
+```{r, ch00_chunk37}
+
+brl_usd_quarterly <- brl_usd_aux %>% 
+  dplyr::mutate(quarter = lubridate::quarter(date, with_year = TRUE)) %>% 
+  dplyr::group_by(quarter) %>% 
+  dplyr::summarise(brl_quarterly = mean(brl))
+
+brl_usd_quarterly
+
+```
+
+Special attention must be taken when we want to work with weeks, because `lubridate` has two different functions to extract this feature: `week` and `isoweek`. The former returns the number of complete seven day periods that have occurred between the date and January 1st, while the latter returns the number of the week (from Monday to Sunday) the date belongs to. 
+
+To get a better sense of the difference between them, suppose we provide the date '2022-01-01'. `lubridate::week` will return 1, since it's in the first seven days period after January 1st. On the other hand, `lubridate::isoweek` will return 52 because it's Saturday and thus part of the last week of the previous year. It'll only return 1 as of '2022-01-03' since it starts a new week.
+
+```{r, ch00_chunk38}
+
+lubridate::week('2022-01-01')
+lubridate::isoweek('2022-01-01')
+lubridate::isoweek('2022-01-03')
+
+```
+
+Therefore, if we want to compute weekly averages and by weekly we mean a period of seven days in a row then we should pick `isoweek` rather than `week`. 
+
+Another feature we can extract from dates is the week day. Besides being useful for temporal aggregation, it can also be employed for both labeling dates and filtering data.
+
+```{r, ch00_chunk39}
+
+brl_usd_aux %>% 
+  dplyr::mutate(wday = lubridate::wday(date, label = TRUE))
+
+```
+
+One last feature extraction function I think is worth mentioning is `lubridate::days_in_month`. As should be obvious, it returns the number of days in the date month. So if we provide '2021-12-01' it'll return 31 since December has 31 days. And, yes, it works fine with February as it takes into account the year. This feature is particularly useful if we have, for instance, monthly totals and we need to compute daily averages. 
+
+
+
+
+Criar datas a partir de strings; obter features das datas: month, isoweek, year, quantos dias tem naquele mês; Operações com datas; 
+
+Falar purrr, ggpplot.
 
 Uma seção dedicada a missing values: como visualizar e preencher?
