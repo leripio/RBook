@@ -576,13 +576,24 @@ covid_loc_cont2 %>%
 
 ### Date manipulation
 
-Mastering date manipulation is crucial to perform a lot of tasks when we're dealing with time series data. The subject is so vast that tidyverse has developed the `lubridate` package exclusively to handle date objects. In this subsection, we'll focus on daily dates since we can explore a wide range of frequencies. 
+Having knowledge on date manipulation is crucial to perform a lot of tasks when we're dealing with time series data. Date objects are very convenient since they allow us to extract features that can be used for many purposes, most notably for temporal aggregation. The subject is so vast that tidyverse has developed the `lubridate` package exclusively to handle date objects.
 
-The first step when we're working with dates is to convert the string to a date object using the `lubridate::as_date` function. This is very straighforward if the date column contains `year`, `month` and `day` sorted this way, regardless of how these terms are separated. For example, it might be like `2022-12-01`, `2022/12/01` or simply `20221201`.
+The first step when we're working with dates is to convert the string to a date object. In order to get rid of ambiguity issues, `lubridate` contains a set of predefined functions that take into account the ordering of year, month and day in the string. 
 
-Sometimes, however, dates can take other forms. For instance, in Brazil it's very common to write dates in the `DD/MM/YYYY` format. In this case, we must declare the unusual format using specific operators: `%Y` for year; `%m` for month; and `%d` for day. There are other two useful ones: `%b` for abbreviated months (Mar, Apr, Nov, etc) and `%y` for two digits year. 
+For instance, if we have a date in the standard `YYYY-MM-DD` format we can use the `ymd` function. Note that it works regardless of how these terms are separated: it might be like `2021-12-01`, `2022/12/01` or simply `20221201`. Also, months names (full or abbreviated forms) are allowed: `2021-December-01` or `2021-Dec-01`. The same logic applies to the whole family of related functions: `mdy`, `dmy`, `ydm`, `dym`, `my`, `ym` and so on. 
 
-Take the following data set (named `brl_usd`) which provides daily values of the Brazilian Real (BRL) versus the US Dollar where the column `date` is in the `DD/MM/YYYY` format. 
+```{r, ch00_chunk332}
+
+lubridate::ymd('2022/12/01')
+lubridate::mdy('december, 1, 2022')
+lubridate::dmy('01122022')
+lubridate::my('Dec-2021')
+
+```
+
+In case the string format doesn't match any of the predefined patterns, we can use `lubridate::as_date` function and declare this unusual format using specific operators: `%Y` for year; `%m` for month; and `%d` for day. There are other two useful ones: `%b` for months names (full or abbreviated) and `%y` for two-digits year. 
+
+Now, let's see how to extract features from date objects and how to use them with common operations. Take the following data set (named `brl_usd`) which provides daily values of the Brazilian Real (BRL) versus the US Dollar from January 2010 to December 2021 where the column `date` is in the `DD/MM/YYYY` format. 
 
 ```{r, ch00_chunk34, echo = FALSE}
 
@@ -593,18 +604,18 @@ brl_usd
 
 ```
 
-We'll first convert it to the appropriate format using the operators we've just learned. Note that `lubridate` will recognize the date elements and automatically return the standard format.  
+We'll first convert it to the appropriate format using the functions we've just learned.
 
 ```{r, ch00_chunk35}
 
 brl_usd_aux <- brl_usd %>% 
-  dplyr::mutate(date = lubridate::as_date(date, format = '%d/%m/%Y'))
+  dplyr::mutate(date = lubridate::dmy(date))
 
 brl_usd_aux
 
 ```
 
-Date objects allow us to extract features that can be used for many purposes, most notably for temporal aggregation. Suppose we want to obtain BRL monthly average. All we have to do is to create the columns we need to perform a grouping operation: year and month. 
+Now, suppose we want to obtain BRL monthly average. All we have to do is to create the columns we need to perform a grouping operation: year and month. 
 
 ```{r, ch00_chunk36}
 
@@ -618,7 +629,23 @@ brl_usd_monthly
 
 ```
 
-The same procedure applies if we'd like to get quarterly means. It's just a matter of creating a column with quarter. Be aware, however, that the `quarter` function has a parameter named `with_year` that when is set to `TRUE` eliminates the need to create a separate column for the year. 
+You might be wondering how to recover the date format `YYYY-MM-DD`. We can do it by simply using `lubridate::make_date`. This function creates a standard date object from user-provided year, month and day. Since we've aggregated daily into monthly, we have two common choices for the day parameter: we either set it to 1 (the default) or we set it to the last day of the month using `lubridate::days_in_month`.
+
+```{r, ch00_chunk36.2}
+
+brl_usd_monthly %>% 
+  dplyr::mutate(date  = lubridate::make_date(year  = year, 
+                                            month = month, 
+                                            day   = 1),
+                date2 = lubridate::make_date(year = year, 
+                                             month = month,
+                                             day   = lubridate::days_in_month(date)))
+
+```
+
+Note that creating a column with the number of days in each month may be itself particularly useful. For instance, when we have only the monthly totals of a variable and we need to compute daily averages. And, of course, it works fine with February since it takes the year into account. 
+
+Continuing with temporal aggregation, the same procedure applies if we'd like to get quarterly means. It's just a matter of creating a column with quarters. Be aware, however, that the `quarter` function has a parameter named `with_year` that when is set to `TRUE` eliminates the need to create a separate column for the year. 
 
 ```{r, ch00_chunk37}
 
@@ -633,7 +660,7 @@ brl_usd_quarterly
 
 Special attention must be taken when we want to work with weeks, because `lubridate` has two different functions to extract this feature: `week` and `isoweek`. The former returns the number of complete seven day periods that have occurred between the date and January 1st, while the latter returns the number of the week (from Monday to Sunday) the date belongs to. 
 
-To get a better sense of the difference between them, suppose we provide the date '2022-01-01'. `lubridate::week` will return 1, since it's in the first seven days period after January 1st. On the other hand, `lubridate::isoweek` will return 52 because it's Saturday and thus part of the last week of the previous year. It'll only return 1 as of '2022-01-03' since it starts a new week.
+To get a better sense of the difference between them, suppose we provide the date '2022-01-01'. `lubridate::week` will return 1, since it's in the first seven days period after January 1st. On the other hand, `lubridate::isoweek` will return 52 because it's Saturday and thus part of the last week of the previous year. It'll only return 1 as of '2022-01-03' since it belongs to a new week.
 
 ```{r, ch00_chunk38}
 
@@ -643,9 +670,7 @@ lubridate::isoweek('2022-01-03')
 
 ```
 
-Therefore, if we want to compute weekly averages and by weekly we mean a period of seven days in a row then we should pick `isoweek` rather than `week`. 
-
-Another feature we can extract from dates is the week day. Besides being useful for temporal aggregation, it can also be employed for both labeling dates and filtering data.
+Therefore, if we want to compute weekly averages and by weekly we mean a period of seven days in a row then we should pick `isoweek` instead of `week`. Another feature we can extract from dates is the week day. In addition to temporal aggregation, it's often used to filter or label data we want to plot later.
 
 ```{r, ch00_chunk39}
 
@@ -654,12 +679,59 @@ brl_usd_aux %>%
 
 ```
 
-One last feature extraction function I think is worth mentioning is `lubridate::days_in_month`. As should be obvious, it returns the number of days in the date month. So if we provide '2021-12-01' it'll return 31 since December has 31 days. And, yes, it works fine with February as it takes into account the year. This feature is particularly useful if we have, for instance, monthly totals and we need to compute daily averages. 
+Now we turn to operations with date objects. The `lubridate` package contains two special operators `%m+%` and `%m-%` that work nicely with period objects to perform, respectively, addition and subtraction.
+
+```{r, ch00_chunk40}
+
+library(lubridate)
+
+d1 <- lubridate::ymd('2020-02-29')
+
+d1 %m+% years(2)
+d1 %m-% months(3)
+d1 %m+% days(1)
+
+```
+
+In addition, there's also the lesser known `add_with_rollback` function which we can use to have more control of the output. For example, when adding one month to 2022-01-31 we might want either 2022-02-28 or 2022-03-01. To get the latter, we set the `roll_to_first` parameter to `TRUE`.
+
+```{r, ch00_chunk41}
+
+d2 <- lubridate::ymd('2022-01-31')
+
+lubridate::add_with_rollback(d2, months(1), roll_to_first = TRUE)
+lubridate::add_with_rollback(d2, months(1), roll_to_first = FALSE)
+
+```
+
+To finish up, let's see two useful functions used to round dates: `floor_date` and `ceiling_date`. They take date objects and rounds it down or up, respectively, to the nearest boundary of the specified time unit.
+
+```{r, ch00_chunk42}
+
+d3 <- lubridate::ymd('2021-03-13')
+
+lubridate::floor_date(d3, unit = 'month')
+lubridate::ceiling_date(d3, unit = 'month')
+lubridate::floor_date(d3, unit = 'quarter')
+lubridate::ceiling_date(d3, unit = 'quarter')
+
+```
+
+These functions can be helpful in several ways and you can find their benefits as you go through your own tasks. I use them very often as a simpler way to perform temporal aggregation. Remember that earlier in this section we computed monthly averages by creating two grouping columns, year and month? The logic was simply to treat every day in the same year/month as belonging to the same group. We can easily accomplish the same result by rounding dates down. 
+
+```{r, ch00_chunk43}
+
+brl_usd_monthly2 <- brl_usd_aux %>% 
+  dplyr::mutate(date = lubridate::floor_date(date, unit = 'month')) %>% 
+  dplyr::group_by(date) %>% 
+  dplyr::summarise(brl_monthly = mean(brl))
+  
+brl_usd_monthly2
+
+```
 
 
-
-
-Criar datas a partir de strings; obter features das datas: month, isoweek, year, quantos dias tem naquele mês; Operações com datas; 
+qday, yday
 
 Falar purrr, ggpplot.
 
