@@ -21,7 +21,7 @@ Most of the time writing neat, flexible and readable code takes longer and requi
 
 In the next sections we'll review the most used functions to go through all the steps of everyday data analyses using core tidyverse packages designed to **Import**, **Wrangle**, **Program** and **Plot**.
 
-## Import
+## Import {#import}
 
 ### Reading from files
 
@@ -345,6 +345,7 @@ The example below shows how to create a nested data frame for the covid data gro
 ```{r ch00_chunk17}
 
 covid_eu_nest <- covid_data %>% 
+  dplyr::filter(continent == 'Europe') %>% 
   dplyr::group_by(location) %>% 
   tidyr::nest()
 
@@ -368,6 +369,7 @@ For example, let's say we want to analyze the covid data only for North and Sout
 
 covid_americas <- covid_data %>% 
   dplyr::filter(continent %in% c('North America', 'South America')) 
+
 ```
 
 This one is not cumbersome. But let's pretend there are, say, 50 continents on Earth with 25 having 'America' in their names. Would it still make sense to write all these 25 names in a vector? Clearly not. Since all of them share a commom pattern, we can easily employ `str_detect` to do the trick:
@@ -591,9 +593,9 @@ lubridate::my('Dec-2021')
 
 ```
 
-In case the string format doesn't match any of the predefined patterns, we can use `lubridate::as_date` function and declare this unusual format using specific operators: `%Y` for year; `%m` for month; and `%d` for day. There are other two useful ones: `%b` for months names (full or abbreviated) and `%y` for two-digits year. 
+In case the string format doesn't match any of the predefined patterns, we can use `lubridate::as_date` function and declare the unusual format using specific operators: `%Y` for year; `%m` for month; and `%d` for day. There are two other useful ones: `%b` for months names (full or abbreviated) and `%y` for two-digits year. 
 
-Now, let's see how to extract features from date objects and how to use them with common operations. Take the following data set (named `brl_usd`) which provides daily values of the Brazilian Real (BRL) versus the US Dollar from January 2010 to December 2021 where the column `date` is in the `DD/MM/YYYY` format. 
+Now, let's see how to extract features from date objects and how to use them perform common operations. Take the following data set (named `brl_usd`) which provides daily values of the Brazilian Real (BRL) versus the US Dollar from January 2010 to December 2021 where the column `date` is in the `DD/MM/YYYY` format. 
 
 ```{r, ch00_chunk34, echo = FALSE}
 
@@ -615,7 +617,7 @@ brl_usd_aux
 
 ```
 
-Now, suppose we want to obtain BRL monthly average. All we have to do is to create the columns we need to perform a grouping operation: year and month. 
+Now, suppose we want to obtain BRL monthly average. We have two ways to do this, more logical or more compact (see later when we talk about rounding dates). In the logic way, all we have to do is to create the columns we need to perform a grouping operation: year and month. 
 
 ```{r, ch00_chunk36}
 
@@ -645,7 +647,7 @@ brl_usd_monthly %>%
 
 Note that creating a column with the number of days in each month may be itself particularly useful. For instance, when we have only the monthly totals of a variable and we need to compute daily averages. And, of course, it works fine with February since it takes the year into account. 
 
-Continuing with temporal aggregation, the same procedure applies if we'd like to get quarterly means. It's just a matter of creating a column with quarters. Be aware, however, that the `quarter` function has a parameter named `with_year` that when is set to `TRUE` eliminates the need to create a separate column for the year. 
+The same procedure applies if we want to get quarterly means. It's just a matter of creating a column with quarters. Be aware, however, that the `quarter` function has a parameter named `with_year` that when is set to `TRUE` eliminates the need to create a separate column for the year. 
 
 ```{r, ch00_chunk37}
 
@@ -679,7 +681,7 @@ brl_usd_aux %>%
 
 ```
 
-Now we turn to operations with date objects. The `lubridate` package contains two special operators `%m+%` and `%m-%` that work nicely with period objects to perform, respectively, addition and subtraction.
+Now we turn to operations with date objects. The `lubridate` package contains two special operators `%m+%` and `%m-%` that work nicely with date objects to perform, respectively, addition and subtraction.
 
 ```{r, ch00_chunk40}
 
@@ -693,7 +695,7 @@ d1 %m+% days(1)
 
 ```
 
-In addition, there's also the lesser known `add_with_rollback` function which we can use to have more control of the output. For example, when adding one month to 2022-01-31 we might want either 2022-02-28 or 2022-03-01. To get the latter, we set the `roll_to_first` parameter to `TRUE`.
+In addition, there's also the lesser known `add_with_rollback` function which we can use to have more control of the output. For example, when adding one month to 2022-01-31 we might want either 2022-02-28 (the last day of the next month) or 2022-03-01 (a period of one month). To get the latter, we set the `roll_to_first` parameter to `TRUE`.
 
 ```{r, ch00_chunk41}
 
@@ -704,7 +706,7 @@ lubridate::add_with_rollback(d2, months(1), roll_to_first = FALSE)
 
 ```
 
-To finish up, let's see two useful functions used to round dates: `floor_date` and `ceiling_date`. They take date objects and rounds it down or up, respectively, to the nearest boundary of the specified time unit.
+I couldn't help but mentioning two useful functions used to round dates: `floor_date` and `ceiling_date`. They take a date object and rounds it down or up, respectively, to the nearest boundary of the specified time unit.
 
 ```{r, ch00_chunk42}
 
@@ -717,7 +719,9 @@ lubridate::ceiling_date(d3, unit = 'quarter')
 
 ```
 
-These functions can be helpful in several ways and you can find their benefits as you go through your own tasks. I use them very often as a simpler way to perform temporal aggregation. Remember that earlier in this section we computed monthly averages by creating two grouping columns, year and month? The logic was simply to treat every day in the same year/month as belonging to the same group. We can easily accomplish the same result by rounding dates down. 
+These functions can be helpful in several ways and you'll find their benefits as you go through your own tasks. For example, if we want to match (or re-write) dates that refer to the same period but are written differently (monthly date in data set A is '2021-12-01' and in data set B is '2021-12-31'). 
+
+I use them very often as a simpler way to perform temporal aggregation. Remember that earlier in this section we computed monthly averages by creating two grouping columns, year and month? The logic was simply to treat every day in the same year/month as belonging to the same group. We can easily accomplish the same result by rounding dates down. 
 
 ```{r, ch00_chunk43}
 
@@ -730,9 +734,174 @@ brl_usd_monthly2
 
 ```
 
+To finish up, let's have a quick look at a family of functions: `wday`, `mday`, `qday` and `yday`. They're used to get the number of days that have occurred within that time period, respectively. 
 
-qday, yday
+```{r, ch00_chunk44}
 
-Falar purrr, ggpplot.
+lubridate::wday('2021-06-10') # 5th day of that week
+lubridate::qday('2021-06-10') # 71th day of the 2nd quarter of 2021
+lubridate::yday('2021-06-10') # 161th day of 2021
+
+```
+
+## Looping
+
+Iteration is an indispensable tool in programming and every language has its own structure. Essentially, loops are used to repeat an action over a set of values, thus preventing us from the annoying and risky copying-and-pasting thing. Whenever we have any kind of redundancy, there's a good reason to use loops.
+
+The `purrr` package provides many interesting tools for working with functions and vectors. For our purposes, we'll stick with the family of `map` functions. The logic will be always the same: applying a function -- existing or user-defined -- over a vector (or list) of arguments. 
+
+Let's start with a very simple example. Suppose we have three numeric vectors and we want to compute their means. Instead of calling `mean` over each vector separately, we can put them into a list and then use the `map` function in conjunction with the existing `mean` function.
+
+```{r, ch00_chunk45}
+
+v1 <- c(1,4,7,8)
+v2 <- c(3,5,9,0) 
+v3 <- c(12,0,7,1)
+
+v_all <- list(v1, v2, v3)
+
+purrr::map(.x = v_all, .f = mean)
+
+```
+
+Note that by default the output will be a list, but we can have other output formats using `map_*`: `map_dbl` will return the results as a vector, whereas `map_dfc` will return them in a (column) data frame. We only need to consider whether or not the output can be coerced to the desired class/format. For example, we would get an error if we tried `map_lgl` since it's not possible to coerce a numeric object into logical.  
+
+```{r, ch00_chunk46}
+
+purrr::map_dbl(.x = v_all, .f = mean)
+purrr::map_dfc(.x = v_all, .f = mean)
+
+```
+
+Most of the time I prefer to return the results as a list, because that makes it easier to apply further operations if needed. Data frames are usually a better choice for final results.  
+
+Now, let's introduce some degree of complexity to the exercise by providing our own function. For this, let's use the example of importing data from an API we saw earlier in subsection \@ref(import). Suppose that in addition to CPI we also want to get the time series for GDP and Unemployment rate. 
+
+Remember (or scroll up if necessary) that we created an object called `api_series_id` with the ID of the CPI time series and that was the only specific parameter -- everything else would be the same for any other series we wanted. Therefore, our first task here is to create a function whose only parameter is the series ID. Then, we create a vector (or list) with the desired series ID's and -- guess what? -- use them inside the `map` function.  
+
+I'll create the `get_series` function using the same content we already saw up there, but leaving the `api_series_id` as a parameter (series_id). Note that I'll keep some objects with their original names -- starting with *cpi_* -- just to avoid confusion. This has no practical effect, though.     
+
+```{r, ch00_chunk47}
+
+get_series <- function(series_id){
+  api_url       <- 'https://api.stlouisfed.org/fred/series/observations?'
+  api_key       <- 'bc0b91e1c6fa2cab4d4f180c7965edfa'
+  api_series_id <- series_id
+  obs_start     <- '2010-01-01'
+  api_filetype  <- 'json'
+  api_request   <- glue::glue('{api_url}series_id={api_series_id}&observation_start={obs_start}&api_key={api_key}&file_type={api_filetype}')
+  cpi_request   <- httr::GET(url = api_request)
+  cpi_content   <- httr::content(cpi_request, as = 'text')
+  cpi_list      <- jsonlite::fromJSON(cpi_content, flatten = FALSE)
+  cpi_tbl       <- cpi_list[['observations']] %>% tibble::as_tibble()
+  return(cpi_tbl)
+} 
+
+```
+
+We can test our function using the CPI's ID we used before. 
+
+```{r, ch00_chunk48}
+
+get_series(series_id = 'CPALTT01USM657N')
+
+```
+
+Great, it's working fine! The next step is to create a vector (or list) with the ID of each series. Assigning names to the vector (list) elements is a good idea since these names are carried forward helping to identify the elements in the output list. 
+
+```{r, ch00_chunk49}
+
+id_list <- list('CPI'   = 'CPALTT01USM657N',
+                'GDP'   = 'GDPC1',
+                'Unemp' = 'UNRATE')
+
+fred_data <- purrr::map(.x = id_list, .f = get_series)
+fred_data
+
+```
+
+We could make our function more general by allowing more parameters to vary. For example, we could have a different time span for each series (the `obs_start` object). The procedure would be almost the same: we would add an extra parameter in the function, create two vectors (lists) with the parameters values and use `map2` instead of `map`. 
+
+```{r, ch00_chunk50}
+
+get_series2 <- function(series_id, series_start){
+  api_url       <- 'https://api.stlouisfed.org/fred/series/observations?'
+  api_key       <- 'bc0b91e1c6fa2cab4d4f180c7965edfa'
+  api_series_id <- series_id
+  obs_start     <- series_start
+  api_filetype  <- 'json'
+  api_request   <- glue::glue('{api_url}series_id={api_series_id}&observation_start={obs_start}&api_key={api_key}&file_type={api_filetype}')
+  cpi_request   <- httr::GET(url = api_request)
+  cpi_content   <- httr::content(cpi_request, as = 'text')
+  cpi_list      <- jsonlite::fromJSON(cpi_content, flatten = FALSE)
+  cpi_tbl       <- cpi_list[['observations']] %>% tibble::as_tibble()
+  return(cpi_tbl)
+} 
+
+id_list <- list('CPI'   = 'CPALTT01USM657N',
+                'GDP'   = 'GDPC1',
+                'Unemp' = 'UNRATE')
+
+time_list <- list('CPI'   = '2010-01-01',
+                  'GDP'   = '2012-04-01',
+                  'Unemp' = '2014-06-01')  
+
+fred_data2 <- purrr::map2(.x = id_list, .y = time_list, .f = get_series2)
+
+```
+
+We must be careful with the example above because it may give the impression that `map2` takes into account the variables names in the process. It doesn't! It actually considers how elements are sorted in each list. So if we changed the CPI to the second position in `time_list`, then we would end up with GDP data with CPI time span.
+
+A safer, thus preferable, alternative is to use names rather than positions as indexes. Since we can use `list[['element_name']]` to access an element in a list, we may reduce our problem to a single dimension by looping over variables names which are the same in both lists.  
+
+```{r, ch00_chunk51}
+
+vars_fred <- c('CPI', 'GDP', 'Unemp')
+fred_data2_names <- purrr::map(
+  .x = vars_fred, 
+  .f = function(x) get_series2(series_id = id_list[[x]],
+                               series_start = time_list[[x]]
+  )
+) %>% 
+  magrittr::set_names(vars_fred)
+
+```
+
+Notice how powerful this solution is: you can generalize it to as many parameters as you need without taking the risk of using the parameter value of one series into another, with the additional work being only to make explicit the parameters of the function in `.f`. 
+
+To finish this topic, let's get back to the end of subsection \@ref(datalay). There, we had an overview of nested data frames and I stated that I find them most useful when we need to perform several tasks over whole data sets. Also, remember that nesting a data frame is, roughly speaking, converting every cell from a single observation into a list. 
+
+Let's print again the nested data frame we created up there, named `covid_eu_nest`.
+
+```{r, ch00_chunk52, echo = FALSE}
+
+covid_eu_nest
+
+```
+
+We can use `map` to perform computations for every country at once. Moreover, we can create new columns to store the results, thus gathering all the information in the same object.
+
+```{r, ch00_chunk54}
+
+covid_eu_nest %>% 
+  dplyr::mutate(
+    max_total_cases = purrr::map_dbl(.x = data, 
+                                 .f = function(x){
+                                   x %>% 
+                                     dplyr::pull(total_cases) %>% 
+                                     max(na.rm = TRUE)}),
+    min_total_cases = purrr::map_dbl(.x = data, 
+                                 .f = function(x){
+                                   x %>% 
+                                     dplyr::pull(total_cases) %>% 
+                                     min(na.rm = TRUE)}))
+
+```
+
+And since each cell is a list rather than an observation, we're by no means restricted to numeric elements. We could use the same strategy to create a column with plots, for example. 
+
+## Plotting
+
+## Extra: missing values
 
 Uma seção dedicada a missing values: como visualizar e preencher?
