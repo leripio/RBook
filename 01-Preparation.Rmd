@@ -15,21 +15,21 @@ To start, what's tidyverse? According to the [official website](https://www.tidy
 
 From my own experience I can ensure you that tidyverse is all you need to carry out data analyses as **neat**, **flexible** and **readable** as possible. By the way, I believe these are the three most important goals for those who want to thrive as a data scientist.
 
-By **neat** I mean succinct code without any redundancy, a single block of code (not a bunch of loose objects) doing all the desired task. **Flexible**, in turn, means the code is general enough. It depends on the nature of the task at hand, so take it more like a philosophy. For example, does the solution still work if the data was updated with new values? Does it depend either on column names or the specific length of the vector? Finally, **readable** means that not only the understanding of the code is easy, but also that it's straightforward to make adjustments to it if necessary.
+By **neat** I mean succinct code without any redundancy, a single block of code (not a bunch of loose objects) doing all the desired task. **Flexible**, in turn, means the code is general enough. It depends on the nature of the task at hand, so take it more like a philosophy. For example, does the solution still work if the data was updated with new values? Or does it depend either on column names or the specific length of the vector? Finally, **readable** means that not only the understanding of the code is easy, but also that it's straightforward to make adjustments to it if necessary.
 
 Most of the time writing neat, flexible and readable code takes longer and requires a dose of creativity, but it surely pays off. Moreover, with practice this will become more and more natural and the cost will get significantly lower.
 
 In the next sections we'll review the most used functions to go through all the steps of everyday data analyses using core tidyverse packages designed to **Import**, **Wrangle**, **Program** and **Plot**.
 
-## Import {#import}
+## Importing {#import}
 
 ### Reading from files
 
-`readr` is the package used to import data from flat files (CSV and TXT). The most generic function is `read_delim` as it has a large set of arguments that allow us to declare the structure of the data we want to import. In practice, we often use the `read_csv` which is a special case of the former with some predefined settings suitable for CSV files -- the most obvious being the comma as the column delimiter.
+`readr` is the package used to import data from flat files (CSV and TXT). The most generic function is `read_delim` as it has a large set of parameters that allow us to declare the structure of the data we want to import. In practice, we often use the `read_csv` which is a special case of the former with some predefined settings suitable for CSV files -- the most obvious being the comma as the column delimiter.
 
-If you're running RStudio IDE, I recommend you to click on **Import Dataset** at the **Environment** sheet (by default it's located in the upper right panel) to manually define the appropriate settings for your file. **We should never be encouraged to use windows, click on buttons or any kind of shortcuts provided by the IDE. This is the only exception I think is worth it**. First, because it can be tedious to set many specific parameters via trial-and-error to correctly import your data. Second, because once you have the configuration done the code is displayed at the bottom of the window so you can copy it and paste it on your script and, eventually, get rid of this shortcut as you learn how things work. Lastly, you'll usually import one single data set for each task and there's not much to improve on this process. Then, Yes, it's a big waste of time trying to understand each single argument.
+If you're running RStudio IDE, I recommend you to click on **Import Dataset** at the **Environment** sheet (by default it's located in the upper right panel) to manually define the appropriate settings for your file. **We should never be encouraged to use windows, click on buttons or any kind of shortcuts provided by the IDE. This is the only exception I think is worth it**. First, because it can be tedious to set many specific parameters via trial-and-error to correctly import your data. Second, because once you have the configuration done the code is displayed at the bottom of the window so you can copy it and paste it on your script and, eventually, get rid of this shortcut as you learn how things work. Lastly, you'll usually import one single data set for each task and there's not much to improve on this process. Then, Yes, it's a big waste of time trying to understand each single parameter.
 
-Just for the sake of illustration, let's use `readr` to import the COVID data from Our World in Data we'll use in Chapter \@ref(owidCovid). It's a standard CSV file, so we can use `read_csv` without any additional parameter. We just need to provide the file path or URL:
+Just for the sake of illustration, let's use `readr` to import the COVID data set from Our World in Data we'll use in Chapter \@ref(owidCovid). It's a standard CSV file, so we can use `read_csv` without any additional parameter. We just need to provide the file path or URL:
 
 ```{r cha00_chunk1, eval = F}
 
@@ -39,11 +39,11 @@ covid_data_from_local <- readr::read_csv('data/owid-covid-data.csv')
 
 ```
 
-Tidyverse also provides packages for reading other usual file types. For instance, we can use `readxl` to read MS Excel spreadsheets and `haven` to read data generated by popular statistical softwares (SPSS, Stata and SAS) in much the same way we did with `readr` for CSV files -- you can check them at the **Import Dataset** dropdown menu. So we won't waste time covering them. Rather, let's use the rest of this section to talk about something very important and that usually gets less attention in books.
+Tidyverse also provides packages for reading other usual file types. For instance, we can use `readxl` to read MS Excel spreadsheets and `haven` to read data generated by popular statistical softwares (SPSS, Stata and SAS) in much the same way we did with `readr` for CSV files -- you can check them at the **Import Dataset** dropdown menu. So we won't waste time covering them. Rather, let's use the rest of this section to talk about something very important and that usually gets less attention in books: reading data from API's.
 
 ### Reading from API
 
-Although the use of these traditional file formats are still widespread, organizations are increasingly switching to API's to make data available to the public. This is a huge improvement since we're able to customize our demand and retrieve only the data we need for the specific task.
+Although the use of traditional flat files are still widespread, organizations are increasingly switching to API to make data available to the public. This is a huge improvement since we're able to customize our demand and retrieve only the data we need for the specific task.
 
 If you don't know what an API is, think of it as an interface to establish a connection to a database. However, instead of reading all the content from this database you can inform your **preferences** like what columns you want, the desired observations (time range if it's a time series) and so on. These preferences are embedded in a **request** and the right form to specify it is usually available in a documentation provided by the API maintainer.
 
@@ -51,7 +51,7 @@ For example, the Federal Reserve Bank of St. Louis maintains a huge repository w
 
 <https://api.stlouisfed.org/fred/series/observations?series_id=GNPCA&api_key=abcdefghijklmnopqrstuvwxyz123456&file_type=json>
 
-We can break this request to see its parts in more detail:
+We can break this request down to see its parts in more detail:
 
 1.  The static URL to access the **Observations** section in the API.
 
@@ -79,9 +79,9 @@ $$
 
 Note that all the parameters following the static part is separated by an **&**. Then, if we want to add any extra parameter it should be placed right after an **&**.
 
-Suppose we want to read monthly data for the [US Consumer Price Index (CPI)](https://fred.stlouisfed.org/series/CPALTT01USM657N). The `series_id` is **CPALTT01USM657N**. Besides, we'd only like to read data as of January 2010. How can we do so? There's a parameter `observation_start` which defines the start of the observation period (YYYY-MM-DD format).
+Suppose we want to read monthly data for the [US Consumer Price Index (CPI)](https://fred.stlouisfed.org/series/CPALTT01USM657N). The `series_id` is **CPALTT01USM657N**. Besides, we'd only like to read data as of January 2010. How can we do so? There's a parameter `observation_start` which sets the start of the observation period (YYYY-MM-DD format).
 
-The code below creates a separate object for each part of the request. Then, we use the `glue` function from the homonymous package to merge the pieces into a single string adding the appropriate **&**. Of course, we could create the complete string all at once. But, creating separate objects makes it easier to find and edit values as well as to transform this task into a function if we had to read other data from this source frequently (more on this later in Chapter \@ref(google)).
+The code below creates a separate object for each part of the request. Then, we use the `glue` function from the homonymous package to merge the pieces into a single string adding the appropriate **&**. Of course, we could create the complete string all at once. But, creating separate objects makes it easier to find and edit values as well as to transform this task into a function if we had to frequently read data from this source (more on this later).
 
 ```{r cha00_chunk2}
 
@@ -107,9 +107,9 @@ cpi_tbl
 
 This concludes our section on how to import data. If you're struggling with other types of data, Tidyverse's official [website](https://www.tidyverse.org/packages/#import) provides a comprehensive list of all the supported file formats and the respective packages used to handle them.
 
-## Wrangle
+## Wrangling
 
-This is by far the most important section in this Chapter. The main goal here is to provide a general sense of how to get raw data ready to use. For this, we'll focus on the roles of the main functions inside the core packages rather than the idiosyncrasies and generalizations of each one. A deeper approach will be taken in the next chapters.
+This is by far the most important section in this Chapter. The main goal here is to provide a general sense of how to get raw data ready to use. For this, we'll focus on the roles of the main functions from `dplyr` package rather than the idiosyncrasies and generalizations of each one. Best practices will be shown in the next chapters.
 
 ### Data manipulation
 
@@ -140,9 +140,9 @@ covid_data_01 <- covid_data %>%
 
 ```
 
-Next, we'd probably need to create additional columns. For instance, suppose that actual new cases in Brazil are much higher than reported because the country doesn't have enough tests and a conservative estimate points to a number of, at least, twice the official count. So we'd like to add a column which is twice the value of the original one representing our guess of the real situation. In addition, we'd also like to create a column to indicate the dominant strain at each period of time. We know that the Delta strain took over Gamma by the end of July 2021 and, then, Omicron took over Delta in the beginning of 2022.
+Next, we'd probably need to create additional columns. For instance, suppose that actual new cases in Brazil are much higher than reported because the country doesn't have enough tests and a conservative estimate points to a number of, say, twice the official count. So we'd like to add a column which is twice the value of the original one representing our guess of the real situation. In addition, we'd also like to create a column to indicate the dominant strain at each period of time. We know that the Delta strain took over Gamma by the end of July 2021 and, then, Omicron took over Delta in the beginning of 2022.
 
-`mutate` can be used to create new variables as a function of existing variables, but not necessarily. Also, it can be used to modify existing variables as new variables overwrites existing variables of the same name. `case_when` is another SQL-inspired function used inside `mutate` to create a new variable based on conditions. It's worth noting that it'll return `NA` if no condition is met. In this case, a useful workaround is to define an extra condition as `TRUE ~ value`, thus assigning a value to all the unmet conditions -- think of this as an **else** condition.
+`mutate` can be used to create new variables as a function of existing ones. Also, it can be used to modify existing variables as new variables overwrites those with the same name. `case_when` is another SQL-inspired function used inside `mutate` to create a new variable based on conditions. It's worth noting that it'll return `NA` if no condition is met. In this case, a useful workaround is to define an extra condition as `TRUE ~ value`, thus assigning a value to all the unmet conditions -- think of this as an **else** condition.
 
 ```{r ch00_chunk06}
 
@@ -218,17 +218,17 @@ In case it went unnoticed, the previous code showed a really nice feature of `mu
 
 Finally, we used `arrange` to sort countries by their peak date (this time by ascending order, the default) and then `slice` to subset only the first ten countries out of the forty-nine in our data set.
 
-**Falar dos joins, bind-rows/cols**
+**Write about joins, bind-rows/cols**
 
 ### Data layout {#datalay}
 
 We've walked through the main functions of `dplyr`. Now, we turn to the `tidyr` package. According to tidyverse's website, the goal of `tidyr` is to help us create **tidy data**. It means a data set where every column is a variable; every row is an observation; and each cell is a single value. This is more like a convention created by tidyverse so that *"you’ll spend less time fighting with the tools and more time working on your analysis"*.
 
-Tidy data is also known as **wide** format -- since it increases the number of columns and decreases the number of rows --, as opposed to the **long** format, where data are stacked increasing the number of rows and decreasing the number of columns. It took me a while before I could tell if a data set was in wide or long format, so don't worry if it's not so clear right now. Perhaps a more direct way of thinking about this distinction is to ask yourself: *Is all the information contained in a single cell?*. If yes, it's wide format. If not, it's long format. 
+Tidy data is also known as **wide** format -- since it increases the number of columns and decreases the number of rows --, as opposed to the **long** format, where data are stacked increasing the number of rows and decreasing the number of columns. It took me a while before I could tell if a data set was either in wide or long format, so don't worry if it's not so clear right now. Perhaps a more direct way of thinking about this distinction is to ask yourself: *Is all the information contained in a single cell?*. If so, it's wide format. If not, then it's long format. 
 
 For example, is the covid data set in wide or long format? If we took a single cell from the **new_cases** column, does it convey all the information for this variable? No, it doesn't. We know the number of new cases in a given date, but we don't know the country that value refers to -- is this from Germany? Nigeria? Chile? 
 
-We can use `tidyr::pivot_wider` to convert from long to wide format. The syntax is very easy to understand: `names_from` is the column we want to widen, whereas `values_from` is the column containing the observations that will fill each cell. `id_cols` is an optional argument used to declare the set of columns that uniquely identifies each observation. In practice, it drops all the other columns in the data set. Hence, if we want to keep all the other variables, just skip it.     
+We can use `tidyr::pivot_wider` to convert from long to wide format. The syntax is very easy to understand: `names_from` is the column we want to widen, whereas `values_from` is the column containing the observations that will fill each cell. `id_cols` is an optional parameter used to declare the set of columns that uniquely identifies each observation. In practice, it drops all the other columns in the data set. Hence, if we want to keep all the other variables, just skip it.     
 
 ```{r ch00_chunk10}
 
@@ -257,11 +257,11 @@ covid_wide_02
 
 ```
 
-Our new data set expanded to 477 columns. As we create more and more columns to get a wide data set it becomes harder to perform some simple tasks. For example, it's much easier to use `group_by` with `mutate` or `summarise` when we have the data set in long format. In addition, using `filter` is generally easier than using a conditional `select` when we want to keep only the relevant data. 
+Our new data set expanded to 477 columns. As we create more and more columns to get a wide data set it might become harder to perform some simple tasks. For example, using `filter` is generally easier than using a conditional `select` when we want to keep only the relevant data. 
 
-In summary, long format may be preferable over wide format when the data set contains more than one grouping variable or we want to work on more than one variable. Besides, long format data sets are ideal for plotting with `ggplot2` package as we'll see later. Therefore, it's not unusual to convert a data set from wide to long format. 
+In summary, long format may be preferable over wide format when the data set contains more than one grouping variable or we want to work on more than one variable. Besides, long format data sets are ideal for plotting with `ggplot2` package as we'll see later. 
 
-The syntax is very similar to what we saw earlier when converting from long to wide format. The unique difference is in `cols` argument, used to declare what columns we want to stack. However, since wide data sets usually have a large number of columns and we're often interested in putting all of them in long format, it's much easier to declare what columns we want to leave out (`-`). 
+Therefore, it's not unusual to convert a data set from wide to long format. The syntax is very similar to what we saw earlier when converting from long to wide format. The unique difference is in `cols` argument, used to declare what columns we want to stack. However, since wide data sets usually have a large number of columns and we're often interested in putting all of them in long format, it's much easier to declare what columns we want to leave out (`-`). 
 
 ```{r ch00_chunk12}
 
@@ -277,7 +277,7 @@ covid_long_01
 
 Note that now even the variables (new_cases and new_deaths) are stored in a single column (variable). This is probably an abuse of language, but I call this a complete long format -- as opposed to the original format where the data set was only partially in the long format (the variables were indeed in wide format). For most applications, I think this is the best way to organize the data. 
 
-Converting a data set between wide and long formats might not completely solve our problem. Sometimes, two pieces of information are merged in a single column. For example, suppose that the `location` column had both the continent and country names instead of only the country as in the original data set. We'll call this data set `covid_loc_cont`
+Converting a data set between wide and long formats might not completely solve our problem. Sometimes, two pieces of information are merged in a single column. For example, suppose that the `location` column had both the continent and country names instead of only the country as in the original data set. We'll call this data set `covid_loc_cont`.
 
 ```{r ch00_chunck13, echo = F}
 
@@ -327,7 +327,7 @@ Then, you could argue that a more general approach would be to use regex to matc
 
 More often than not, the direct solution is the most difficult to implement (or we simply don't know how to accomplish it) and so we have to think about alternative ways. Data science is all about this. Since a regex solution alone might be very tough or even unfeasible, we'll get back to this problem later when covering text manipulation with the `stringr` package.      
 
-For now, let's just get done with the `tidyr` package looking at two more very commonly used functions. The first one is `unite`, which is the counterpart of `separate`. We can use it to convert the `covid_separate` data frame back to the original form as in `covid_loc_cont`.
+For now, let's just get done with the `tidyr` package looking at two other very commonly used functions. The first one is `unite`, which is the counterpart of `separate`. We can use it to convert the `covid_separate` data frame back to the original form as in `covid_loc_cont`.
 
 ```{r ch00_chunk16}
 
@@ -372,7 +372,7 @@ covid_americas <- covid_data %>%
 
 ```
 
-This one is not cumbersome. But let's pretend there are, say, 50 continents on Earth with 25 having 'America' in their names. Would it still make sense to write all these 25 names in a vector? Clearly not. Since all of them share a commom pattern, we can easily employ `str_detect` to do the trick:
+This one is not cumbersome. But let's pretend there are, say, 50 continents on Earth with 25 having 'America' in their names. Would it still make sense to write all these 25 names in a vector? Absolutely not. Since all of them share a commom pattern, we can easily employ `str_detect` to do the trick:
 
 ```{r ch00_chunk19}
 
@@ -381,7 +381,7 @@ covid_americas2 <- covid_data %>%
 
 ```
 
-Note that we could have left aside several characters using only, say, 'Am' or 'Ame'. It would work fine if there is no other continent with this sequence of characters. Of course, this parsimony makes more sense for lengthy words or long sentences. For short words it's recommended to write the full word in order to prevent any undesirable output. 
+Note that we could have left aside several characters using only, say, 'Am' or 'Ame'. This would have worked fine if there was no other continent with this sequence of characters. Of course, this parsimony makes more sense for lengthy words or long sentences. For short words it's recommended to write the full word in order to prevent any undesirable output. 
 
 In addition, we can also provide multiple patterns to `str_detect` by separating them with a `|`. 
 
@@ -420,7 +420,7 @@ covid_numCont %>%
 
 ```
 
-To solve this is solely a matter of subsetting the string from position 3 onwards using `str_sub`. The `end` argument defaults to last character, so we don't need to explicit it. 
+To solve this is solely a matter of subsetting the string from position three onwards using `str_sub`. The `end` argument defaults to last character, so we don't need to explicit it. 
 
 ```{r ch00_chunk23}
 
@@ -446,7 +446,7 @@ covid_numCont %>%
 
 ```
 
-With an extra digit, we could no longer resort to the previous solution. We won't dedicate an exclusive section to regular expressions, but simple examples will eventually show up throughout the book. In this case, we could use a simple regular expression inside `str_remove` to get rid of everything before and up to the `.` -- `.*\\.`. 
+With an extra digit, we could no longer resort to the previous solution. We won't dedicate an exclusive section to regular expressions, but simple examples will eventually show up throughout the book. In this case, we could use a simple regular expression inside `str_remove` to get rid of everything before and up to the `.`, `.*\\.`. 
 
 ```{r ch00_chunk25}
 
@@ -472,7 +472,7 @@ covid_typo
 
 ```
 
-Since the data frame contains a huge number of observations, it may occur in other positions as well. We can use `str_replace` to fix it for the whole column. 
+Since the data frame contains a huge number of observations, it may be present in other positions as well. We can use `str_replace` to fix it for the whole column. 
 
 ```{r ch00_chunk28, eval = FALSE}
 
@@ -499,9 +499,9 @@ covid_typo %>%
 
 ```
 
-There's one last kind of typo we can't help but to mention: whitespace. Whitespaces are particularly troublesome when they're misplaced in the start/end of string or repeated inside it. Because they're very easy to go unnoticed the `stringr` package contains two functions to cope with them: `str_trim` and `str_squish`. The former removes whitespaces from start/end of string, whereas the later removes them inside a string. 
+There's one last kind of typo we can't help but to mention: whitespace. Whitespaces are particularly troublesome when they're misplaced in the start/end of string or repeated inside it. Because they're very easy to go unnoticed the `stringr` package contains two functions to cope with them: `str_trim` and `str_squish`. The former removes whitespaces from start/end of the string, whereas the later removes them from inside of a string. 
 
-The data frame below (named `covid_ws`) uses the same example as above, but now with a whitespace in the end of observations 1 and 5; and a repeated whitespace inside the observations 3 and 8. 
+The data frame below (named `covid_ws`) uses the same example as above, but now with a whitespace in the end of observations 1 and 5; and a repeated whitespace inside the observations 3 and 8. Note that `tibble` automatically adds quotation marks around the strings to highlight the extra whitespaces. This is awesome!
 
 ```{r ch00_chunk30, echo = F}
 
@@ -518,7 +518,7 @@ covid_ws
 
 ```
 
-We can easily get rid of them using those functions. It's advisable to use them as a preprocessing step whenever we're working with character columns that should not have these extra whitespaces.
+We can easily get rid of the whitespaces using those functions. It's advisable to use them as a preprocessing step whenever we're working with character columns that should not have these extra whitespaces.
 
 ```{r ch00_chunk32, eval = FALSE}
 
@@ -576,13 +576,15 @@ covid_loc_cont2 %>%
 
 ```
 
+Job done! Next we turn to dates, which are a special form of string. Handling them properly is essential to analyze time series data.   
+
 ### Date manipulation
 
-Having knowledge on date manipulation is crucial to perform a lot of tasks when we're dealing with time series data. Date objects are very convenient since they allow us to extract features that can be used for many purposes, most notably for temporal aggregation. The subject is so vast that tidyverse has developed the `lubridate` package exclusively to handle date objects.
+Having knowledge on date manipulation is crucial to perform a lot of tasks when we're dealing with time series data. Date objects are very convenient since they allow us to extract features that can be used for many purposes. The subject is so vast that tidyverse has developed the `lubridate` package exclusively to handle date objects.
 
 The first step when we're working with dates is to convert the string to a date object. In order to get rid of ambiguity issues, `lubridate` contains a set of predefined functions that take into account the ordering of year, month and day in the string. 
 
-For instance, if we have a date in the standard `YYYY-MM-DD` format we can use the `ymd` function. Note that it works regardless of how these terms are separated: it might be like `2021-12-01`, `2022/12/01` or simply `20221201`. Also, months names (full or abbreviated forms) are allowed: `2021-December-01` or `2021-Dec-01`. The same logic applies to the whole family of related functions: `mdy`, `dmy`, `ydm`, `dym`, `my`, `ym` and so on. 
+For instance, if we have a date in the standard `YYYY-MM-DD` format we can use the `ymd` function. Note that it works regardless of how these terms are separated: it might be like `2021-12-01`, `2022/12/01` or even `20221201`. Also, months names (full or abbreviated forms) are allowed: `2021-December-01` or `2021-Dec-01`. The same logic applies to the whole family of related functions: `mdy`, `dmy`, `ydm`, `dym`, `my`, `ym` and so on. 
 
 ```{r, ch00_chunk332}
 
@@ -595,7 +597,7 @@ lubridate::my('Dec-2021')
 
 In case the string format doesn't match any of the predefined patterns, we can use `lubridate::as_date` function and declare the unusual format using specific operators: `%Y` for year; `%m` for month; and `%d` for day. There are two other useful ones: `%b` for months names (full or abbreviated) and `%y` for two-digits year. 
 
-Now, let's see how to extract features from date objects and how to use them perform common operations. Take the following data set (named `brl_usd`) which provides daily values of the Brazilian Real (BRL) versus the US Dollar from January 2010 to December 2021 where the column `date` is in the `DD/MM/YYYY` format. 
+Now, let's see how to extract features from date objects and how to use them to perform common operations. Take the following data set (named `brl_usd`) which provides daily values of the Brazilian Real (BRL) versus the US Dollar from January 2010 to December 2021 where the column `date` is in the `DD/MM/YYYY` format. 
 
 ```{r, ch00_chunk34, echo = FALSE}
 
@@ -606,7 +608,7 @@ brl_usd
 
 ```
 
-We'll first convert it to the appropriate format using the functions we've just learned.
+Note that the column date is in standard string (or character) format. We'll first convert it to the appropriate date format using the functions we've just learned.
 
 ```{r, ch00_chunk35}
 
@@ -721,7 +723,7 @@ lubridate::ceiling_date(d3, unit = 'quarter')
 
 These functions can be helpful in several ways and you'll find their benefits as you go through your own tasks. For example, if we want to match (or re-write) dates that refer to the same period but are written differently (monthly date in data set A is '2021-12-01' and in data set B is '2021-12-31'). 
 
-I use them very often as a simpler way to perform temporal aggregation. Remember that earlier in this section we computed monthly averages by creating two grouping columns, year and month? The logic was simply to treat every day in the same year/month as belonging to the same group. We can easily accomplish the same result by rounding dates down. 
+I use them very often as a simpler way to perform temporal aggregation. Remember that earlier in this section we computed monthly averages by creating two grouping columns, year and month. The logic was simply to treat every day in the same year/month as belonging to the same group. We can easily accomplish the same result by rounding dates down, with the great benefit of preserving the date column. 
 
 ```{r, ch00_chunk43}
 
@@ -743,6 +745,8 @@ lubridate::qday('2021-06-10') # 71th day of the 2nd quarter of 2021
 lubridate::yday('2021-06-10') # 161th day of 2021
 
 ```
+
+It's very useful, for example, when you need to compare observations from the same period in different years or create high frequency seasonal variables.
 
 ## Looping
 
@@ -898,7 +902,7 @@ covid_eu_nest %>%
 
 ```
 
-And since each cell is a list rather than an observation, we're by no means restricted to numeric elements. We could use the same strategy to create a column with plots, for example. 
+And since each cell is a list rather than an observation, we're by no means restricted to numeric elements. We could use the same strategy to create a column with plots, for example. Plotting is, by the way, the subject of the next section.
 
 ## Plotting
 
