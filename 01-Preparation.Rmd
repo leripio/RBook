@@ -31,7 +31,7 @@ If you're running RStudio IDE, I recommend you to click on **Import Dataset** at
 
 Just for the sake of illustration, let's use `readr` to import the COVID data set from Our World in Data we'll use in Chapter \@ref(owidCovid). It's a standard CSV file, so we can use `read_csv` without any additional parameter. We just need to provide the file path or URL:
 
-```{r cha00_chunk1, eval = F}
+```{r cha00_chunk1, eval = T}
 
 data_url <- 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv'
 covid_data_from_url   <- readr::read_csv(data_url)
@@ -910,7 +910,7 @@ We're almost there in our goal to review the basics of Tidyverse. Succinctly des
 
 In fact, the grammar used in `ggplot2` package is broad and far from simple at first glance. But as you practice, it becomes increasingly graspable. Still, you'll often need to turn to external resources to learn how to insert specific features -- Stack Overflow is of great help on this.
 
-So, let's think of the process of making a graphic as a set of layers arranged sequentially. The first layer is the data you want to plot. We'll use the CPI data from subsection \@ref(readapi). The second layer is the `ggplot` function. So far, there's nothing to visualize. All these two layers do is to set the stage for what's coming next.  
+Let's think of the process of making a graphic as a set of layers arranged sequentially. The first layer is the data you want to plot. We'll use the CPI data from subsection \@ref(readapi). The second layer is the `ggplot` function. So far, there's nothing to visualize. All these two layers do is to set the stage for what's coming next.  
 
 ```{r, ch00_chunk55, eval = F}
 
@@ -981,7 +981,108 @@ cpi_tbl %>%
 
 ```
 
-Comentar a questão do uso de parâmetros dentro e fora de AES. Também falar sobre usar parâmetros globais dentro do ggplot() e locais em cada geom.
+Since the parameter `x = date` appears in both `geom_line` layers, we could make the code more compact by moving this parameter to `ggplot()` function. All the parameters inside `ggplot()` are carried forward to every subsequent layer. It saves a lot of effort when we're adding geoms to a graphic with fixed features. In this graphic, `x` will always be the date variable regardless of any layer I insert on it.  
+
+```{r, ch00_chunk60, eval = F}
+
+cpi_tbl %>%
+  dplyr::mutate(date = lubridate::ymd(date),
+                value = as.numeric(value)) %>% 
+  dplyr::mutate(value_avg = mean(value[which(lubridate::year(date) %in% 2010:2019)])) %>% 
+  ggplot(aes(x = date)) + 
+  geom_line(aes(y = value)) +
+  geom_line(aes(y = value_avg), color = 'red', lwd = 1) +
+  labs(title    = 'US CPI showing an upward trend as of 2021',
+       subtitle = 'Red line is 2010-2019 average',
+       x        = 'Date',
+       y        = 'US Monthly CPI (%)') +
+  scale_x_date(date_breaks = '1 year', date_labels = '%Y') +
+  scale_y_continuous(breaks = seq(-1, 1, 0.25))
+
+```
+
+You should be asking yourself why `x` and `y` parameters went inside the `aes` function whereas `color` went outside it. First of all, the parameters which set the graphic axes always go inside `aes`. Other parameters have a special role whether they appear inside or outside `aes`. According to the documentation, *aesthetic mappings describe how variables in the data are mapped to visual properties (aesthetics) of geoms*. It's much more easier to understand through an example. 
+
+In the graphic above, we used `color` outside `aes` to define which color we wanted for the graphic line. However, if we were to use `color` as an attribute to highlight different groups from the data, `color` should go inside `aes`. In addition, we should pass a variable onto it instead of color names. This variable might be discrete, in which case we would have one color per group; or it might be continuous, in which case we would have a color gradient.
+
+In the piece of code below we create a new variable named *covid_period* to separate the CPI data between pre-Covid and Covid periods and use it as a color attribute.
+
+```{r, ch00_chunk61}
+library(tidyverse)
+cpi_tbl %>%
+  dplyr::mutate(date = lubridate::ymd(date),
+                value = as.numeric(value),
+                covid = if_else(date < '2020-03-01', 'No', 'Yes')) %>% 
+  ggplot() + 
+  geom_line(aes(x = date, y = value, color = covid), lwd = 1) +
+  labs(title    = 'US CPI showing an upward trend as of 2021',
+       x        = 'Date',
+       y        = 'US Monthly CPI (%)') +
+  scale_x_date(date_breaks = '1 year', date_labels = '%Y') +
+  scale_y_continuous(breaks = seq(-1, 1, 0.25))
+
+```
+
+Note that `ggplot` automatically assigns colors for the attributes and adds a legend. So we could be interested in customize both the attributes' colors and legend position. Again, this might be achieved by adding two specific layers. The logic will always be the same: **parameters inside `aes` turn a variable into an attribute which might then be customized by specific layers**. 
+
+```{r, ch00_chunk62}
+
+cpi_tbl %>%
+  dplyr::mutate(date = lubridate::ymd(date),
+                value = as.numeric(value),
+                covid = if_else(date < '2020-03-01', 'No', 'Yes')) %>% 
+  ggplot() + 
+  geom_line(aes(x = date, y = value, color = covid), lwd = 1) +
+  labs(title    = 'US CPI showing an upward trend as of 2021',
+       x        = 'Date',
+       y        = 'US Monthly CPI (%)') +
+  scale_x_date(date_breaks = '1 year', date_labels = '%Y') +
+  scale_y_continuous(breaks = seq(-1, 1, 0.25)) +
+  scale_color_manual(values = c('darkgreen', 'orange')) +
+  theme(legend.position = 'top')
+  
+```
+
+As a final example, we'll see how to build a scatter plot and explore some additional features from `ggplot`. Scatter plots are used to highlight the relationship between two variables in a given point in time. For this task, let's take the Covid data set from subsection \@ref(import). We'll first filter the data to a given point in time, say '2021-07-31'. Next, we'll plot **people_fully_vaccinated_per_hundred** and **new_deaths_smoothed_per_million** on the **x** and **y** axes, respectively. 
+
+```{r, ch00_chunk63}
+
+covid_data_from_local %>% 
+  dplyr::filter(date == '2021-07-31') %>% 
+  ggplot() +
+  geom_point(aes(x = people_fully_vaccinated_per_hundred,
+                 y = new_deaths_smoothed_per_million))
+  
+```
+
+Be aware that we're not trying to establish a causal relationship, nor to find a threshold for vaccination above which people are safe. We must be careful when interpreting this graphic, since omitted variables such as age and previous exposure to the virus may influence the outcome. 
+
+A possible message we can extract from it is: *new deaths in late July were above 5 per million people in countries where vaccination falls below 30% of population*. So let's put this in the graph title. In addition, let's use colors to represent each continent (inside `aes` since it's a mapping attribute) and increase the size of the points (outside `aes` since it's not a mapping attribute).
+
+We saw earlier how to manually set the color to each group. It's worth emphasizing that we're by no means bounded to using colors names as `ggplot` also works with other tools such as HEX codes and the awesome ColorBrewer. ColorBrewer is an amazing source for color schemes carefully designed to improve visual communication. You can check this out at https://colorbrewer2.org/. 
+
+We'll stick to ColorBrewer since it makes it effortless to assign a different color to each of the six continents. Notice that after choosing your desired pattern in the website, you get some meta data (type and scheme) embedded in the link displayed on your browser that will be used here.
+
+In addition, we'll use `theme_light()` to make our plot cleaner. Basically, a theme is a set of pre-defined features for a graph. You can check other built-in themes starting with `theme_`, including `theme_dark()`, `theme_minimal()`, `theme_classic()` and so on.  
+
+```{r, ch00_chunk64}
+
+covid_data_from_local %>% 
+  dplyr::filter(date == '2021-07-31',
+                !is.na(continent)) %>% 
+  ggplot() +
+  geom_point(aes(x = people_fully_vaccinated_per_hundred,
+                 y = new_deaths_smoothed_per_million,
+                 color = continent),
+             size = 3) +
+  labs(title = 'New deaths in late July were above 5 per million people in countries where vaccination falls below 30% of population') +
+  scale_color_brewer(type = 'diverging', palette = 'BrBG') +
+  theme_light()
+  
+```
+
+Falar de facets
+
 
 ## Extra: missing values
 
