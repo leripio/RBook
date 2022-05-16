@@ -236,9 +236,9 @@ In case it went unnoticed, the previous code showed a really nice feature of `mu
 
 In the last two lines, we used `arrange` to sort countries firstly by the maximum number of new cases and then by their peak date and `slice` to subset only the first ten countries out of the forty-nine in our data set. This ends our approach to single data sets for now. 
 
-But before we jump to the next section, there's something very important to address: merging multiple data sets. There are two families of functions in `dplyr` to merge data frames, the `*_join` and the `bind_*` family. Let's see how they work.
+But before we jump to the next section, there's something very important to address: merging multiple data sets. There are two families of functions in `dplyr` to merge data frames, `*_join` and `bind_*`. Let's see how they work.
 
-The `*_join` functions are used to merge two data frames horizontally, matching their rows based on specified keys. For example, take the `covid_data_05` data frame we created above. It contains the top ten European countries with the highest number of new Covid cases in a single day and their peak dates. Suppose we want to add information on the population size for each country, which is available in another data frame named `europe_population`. 
+The `*_join` functions are used to merge two data frames horizontally, matching their rows based on specified keys. For example, take the `covid_data_05` data frame we created above. It contains the top ten European countries with the highest number of new Covid cases in a single day and their peak dates. Suppose we want to add information on the population size for each country, which is available in another data frame named `europe_population` displayed below. 
 
 ```{r ch_00_chunk091, echo = FALSE}
 
@@ -263,7 +263,7 @@ covid_data_05_with_pop
 
 ```
 
-Meanwhile, we could have been assigned a different task. For example, adding to `european_population` the information on maximum daily number of new Covid cases and peak dates we have from `covid_data_05`. This can also be achieved with `left_join` by reversing the order of the data frames (and names of the key column since they're not the same). 
+We could have been assigned a slightly different task. For example, adding to `european_population` the information on maximum daily number of new Covid cases and peak dates we have from `covid_data_05`. This can also be achieved with `left_join` by reversing the order of the data frames (and names of the key column since they're not the same). 
 
 An effortless alternative is to replace `left_join` with `right_join`, which adds to the second data frame (the one on the right) the information from the first data frame (the one on the left). In this case we don't need to change the order of the parameters. 
 
@@ -276,13 +276,41 @@ pop_with_covid_info
 
 ```
 
-Notice that `left_join` and `right_join` keep all the rows from just one of the two data frames. Sometimes, however, we want to keep all the rows from both data frames. For example, imagine that `covid_data_05` had data not only on European but on South American countries as well, whereas the `european_population` also included the populations from Asian countries. If we merged the data frames using the functions we've learned so far, we'd end up loosing observations on either Covid in South America or populations from Asia. 
+At first glance it seems to produce the same outcome, but notice that the number of rows are different in the two resulting data sets. In the first case `left_join` kept all the rows from `covid_data_05` and only the *corresponding* rows from `europe_population`, whereas `right_join` did the opposite. In summary, `left_join` and `right_join` keep all the rows from just one of the two data frames. 
+
+Sometimes, however, we want to keep all the rows from both data frames. For example, imagine that `covid_data_05` had data not only on European but on South American countries as well. In addition, the `european_population` data frame also included the populations from Asian countries. If we merged the data frames using the functions above, we'd end up loosing observations on either Covid in South America or populations in Asia. 
 
 In order to merge the data frames by their common countries while keeping the remaining observations from both, we should employ the `full_join` function. On the other hand, if we're willing to keep only the common countries in both data frames, this is the case for the `inner_join` function. 
 
-These four functions comprise what it's called **mutating-joins** since they add columns from one data frame to the other. In addition, there are the **filtering-joins** functions, which filter the rows from one data frame based on the presence (`semi_join`) or absence (`anti_join`) of matches in the other data frame. Given the latter category is used to a much lesser extent, I won't go into detail right now. Eventually they'll show up in the coming chapters.       
+These four functions comprise what it's called **mutating-joins** since they add columns from one data frame to the other. There are also the **filtering-joins** functions, which filter the rows from one data frame based on the presence (`semi_join`) or absence (`anti_join`) of matches in the other data frame. Given the latter category is used to a much lesser extent, I won't go into detail right now. Eventually they'll show up in the coming chapters.       
 
-**Write about bind-rows/cols**
+We saw that `*_join*` operations are particularly useful to merge data frames horizontally and by their matching rows according to key variables. More often than not we need to stack data vertically by their matching columns. For example, suppose the Covid data set was released as a single file for each country and we needed to perform some comparisons between France and the United Kingdom - `covid_fr` and `covid_uk` data sets shown below.
+
+```{r ch00_chunk093, echo = FALSE}
+
+covid_uk <- covid_data %>% 
+  dplyr::filter(location == 'United Kingdom') %>% 
+  dplyr::select(date, location, new_cases)
+
+covid_fr <- covid_data %>% 
+  dplyr::filter(location == 'France') %>% 
+  dplyr::select(date, location, new_cases, total_cases)
+
+covid_uk
+covid_fr
+
+```
+
+This can be easily accomplished by `bind_rows` which, unlike the `*_join` family, allows us to provide several data frames. What's cool about `bind_rows` is that non-matching columns are kept with their values filled with `NA` for the data frames where the column is absent. In the example above, the `covid_fr` data set has a total cases column which is absent in `covid_uk`. 
+
+```{r ch00_chunk094, echo = FALSE}
+
+covid_fr_uk <- dplyr::bind_rows(covid_fr, covid_uk)
+covid_fr_uk
+
+```
+
+The `bind_cols` function is more restrictive in this regard. It's used to merge the columns of data frames, but matching by row position rather than a key variable. For this reason, we can't have data frames of different lengths. In practice, it's much more common to rely on `*_join*` functions when we need to merge data frames horizontally.  
 
 ### Data layout {#datalay}
 
